@@ -1,0 +1,28 @@
+{% block header %}
+<header>
+    <div class="header-wrapper">
+        <div class="site-branding">
+            <a href="{{ path('app_home') }}"><img src="{{ asset('assets/img/logo.png')}}">
+        </div>
+        <nav class="menu-header">
+            <ul class="list-inline">
+                <li class="menu-item">Carte</li>
+                <li class="menu-item"><a href="{{ path('app_liste_annonces') }}"> Chercher une balade</a></li>
+                <li class="menu-item">À propos</li>
+                <li class="menu-item">Fonctionnalités</li>
+            </ul>
+        </nav>
+        <nav class="log-wrapper">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="vertical" href="{{ path('app_backoffice') }}"><img src="{{ asset('assets/img/icons/icon-account.svg')}}"></a>
+            <a href="{{ path('app_logout') }}">Deconnexion</a>
+        {% else %}
+            <a href="{{ path('app_register') }}" class="register">S'inscrire</a>
+        <a href="{{ path('app_login') }}" class="connect">
+            <button class="btn-green">Connexion</button>
+        </a>
+        {% endif %}            
+        </nav>
+    </div>
+</header>
+{% endblock %}

@@ -1,0 +1,24 @@
+
+{% block breakcrumb %}
+<!------ Breakcrumb Component----->
+{% if is_granted('ROLE_ADMIN') %}
+    
+    <div class="h-100 vertical justify-center bo__breakcrumb padding-large bleu-bg">
+{% else %}
+    <div class="h-100 vertical justify-center bo__breakcrumb padding-large jaune-light-bg">
+{% endif %}
+    <div class="inline gap-30">
+        <h1>{% block title %}{{ title_controller }}
+            {# {% if count %}
+                <span class="light">({{ count }})</span>
+            {% endif %} #}
+            {% endblock %}</h1>
+        {%  if btn_breakcrumb %}
+            <button class="btn-green inline justify-center hover-green">
+                <a class="action ajouter" href="{{ path( btn_breakcrumb ) }}">Ajouter</a>
+            </button>
+        {% else %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

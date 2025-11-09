@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TrailUp - Trouver vos compagnons de balades!</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+</head>
+
+<body>
+    <!---- Header ---->
+    <header>
+        <div class="header-wrapper">
+            <div class="site-branding">
+                <a href="index.html"><img src="assets/img/logo.png">
+            </div>
+            <nav class="menu-header">
+                <ul class="list-inline">
+                    <li class="menu-item">Carte</li>
+                    <li class="menu-item">Chercher une balade</li>
+                    <li class="menu-item">À propos</li>
+                    <li class="menu-item">Fonctionnalités</li>
+                </ul>
+            </nav>
+            <nav class="log-wrapper">
+                <a href="" class="register">S'inscrire</a>
+                <a href="" class="connect">
+                    <button class="btn-green">
+                        Connexion</button></a>
+            </nav>
+        </div>
+    </header>
+    <!---- Main ---->
+    <main class="backoffice">
+        <div class="grid-2-colonnes colonnes-25__75 row-22_auto">
+            <!------ Account ------>
+            <div class="account padding-20 jaune-pastel-bg inset-shadow">
+                <div class="h-100 vertical justify-between">
+                    <!--Row 1-->
+                    <div class="row-auto inline justify-between gap-15">
+                        <!--Thumbnail-->
+                        <div class="user-thmb-container self-center">
+                            <img src="assets/img/thmb-user.png" class="w-100">
+                        </div>
+                        <!--User Intro-->
+                        <div class="user-intro">
+                            <h1>Pauline</h1>
+                            <div class="follow inline">
+                                <div class="followers-wrapper">
+                                    <p>Followers</p>
+                                    <p class="regular">10</p>
+                                </div>
+                                <div class="followers-wrapper">
+                                    <p>Suivi(e)s</p>
+                                    <p class="regular">40</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Row 2-->
+                    <div class="row-auto inline justify-center gap-15">
+                        <div class="w-30 radius-5 blanc-bg vertical padding-10 text-center">
+                            <p class="text-s">Itinéraires</p>
+                            <p class="regular">10</p>
+                        </div>
+                        <div class="w-30 radius-5 blanc-bg vertical padding-10 text-center">
+                            <p class="text-s">Kilomètres</p>
+                            <p class="regular">674</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------ Sidebar ------>
+            <div class="sidebar-container jaune-pastel-bg inset-shadow">
+                <!--- Mon Compte --->
+                <div class="sb-row linear-jaune-bg grey-shadow radius-5 text-24">
+                    <a href="" class="inline vert-gris semibold">
+                        <p class="prev__icon settings">Mon compte</p>
+                    </a>
+                </div>
+                <!--- Nav Sidebar --->
+                <nav class="sidebar sb-row linear-jaune-bg grey-shadow radius-5">
+                    <ul class="bo-menu text-24">
+                        <li class="bo-items bo-items__open">
+                            <span class="prev__icon prev__icon__active itineraires">Mes itinéraires</span>
+                            <svg class="arrow down" width="16" height="9" viewBox="0 0 16 9" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.81592 0.394136C0.364745 0.891819 0.364745 1.63834 0.81592 2.13603L6.34283 8.23264C7.24518 9.22801 8.59869 9.22801 9.50104 8.23264L15.0279 2.13603C15.4791 1.63834 15.4791 0.891819 15.0279 0.394136C14.5767 -0.103547 13.9 -0.103547 13.4488 0.394136L8.71147 5.6198C8.2603 6.11748 7.58354 6.11748 7.13237 5.6198L2.39506 0.394136C1.94388 -0.103547 1.26709 -0.103547 0.81592 0.394136Z" />
+                            </svg>
+                            <ul class="bo-items_submenu text-22">
+                                <li><a href="#">Publiés (1)</a></li>
+                                <li><a href="#">Historique</a></li>
+                                <li><a href="#">Enregistrés (10)</a></li>
+                            </ul>
+                        </li>
+                        <li class="bo-items">
+                            <span class="prev__icon friends">Amis</span>
+                            <svg class="arrow up" width="16" height="9" viewBox="0 0 16 9" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.8746 8.6059C15.3258 8.10822 15.3258 7.36171 14.8746 6.86402L9.34772 0.767398C8.44537 -0.227967 7.09186 -0.227967 6.18951 0.767398L0.6626 6.86402C0.211425 7.36171 0.211425 8.10822 0.6626 8.6059C1.11377 9.10359 1.79056 9.10359 2.24174 8.6059L6.97905 3.38024C7.43022 2.88256 8.10698 2.88256 8.55815 3.38024L13.2955 8.6059C13.7467 9.10359 14.4234 9.10359 14.8746 8.6059Z" />
+                            </svg>
+                        </li>
+                        <li class="bo-items bo-items__open">
+                            <span class="prev__icon prev__icon__active mailer">Messagerie</span>
+                            <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" width="15" height="9" viewBox="0 0 15 9" fill="currentColor">
+                                <path d="M0.360755 0.394094C-0.0904191 0.891777 -0.0904191 1.63831 0.360755 2.136L5.88763 8.2326C6.78998 9.22797 8.14349 9.22797 9.04584 8.2326L14.5728 2.136C15.0239 1.63831 15.0239 0.891778 14.5728 0.394095C14.1216 -0.103587 13.4448 -0.103587 12.9936 0.394095L8.25631 5.61978C7.80513 6.11746 7.12838 6.11746 6.6772 5.61978L1.93986 0.394094C1.48868 0.0208318 0.81193 0.0208318 0.360755 0.394094Z" />
+                            </svg>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!------ Breakcrumb ----->
+            <div class="h-100 vertical justify-center bo__breakcrumb padding-large bleu-light-bg">
+                <div class="inline gap-30">
+                    <h1>Nouvel itinéraire</h1>
+                </div>
+            </div>
+            <!------ Content ------>
+            <div class="content padding-large">
+                <div class="colonnes gap-30">
+                    <!------ Formulaire ------>
+                    <form class="new-map vertical colonne-20w gap-15">
+                        <div class="block-input">
+                            <input type="date">
+                        </div>
+                        <div class="block-input">
+                            <input type="time">
+                        </div>
+                        <div class="block-input">
+                            <label class="semibold">Lieu </label>
+                            <input type="text">
+                        </div>
+
+                        <div class="block-input">
+                            <p class="semibold">Journée</p>
+                            <label class="switch">
+                              <input type="checkbox">
+                              <span class="slider round"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="radio-container">
+                            <p class="semibold">Type d'itinéraires</p>
+                            <div class="inline gap-15">
+                                <label class="inline">Boucle</label>
+                                <input type="radio">
+                                <label class="inline">Direct</label>
+                                <input type="radio">
+                                <label class="inline">Étoile</label>
+                                <input type="radio">
+                            </div>
+                        </div>
+
+                        <div class="radio-container">
+                            <p class="semibold">Allures</p>
+                            <div class="inline gap-15">
+                                <label class="inline">Pas</label>
+                                <input type="checkbox">
+                                <label class="inline">Trot</label>
+                                <input type="checkbox">
+                                <label class="inline">Galop</label>
+                                <input type="checkbox">
+                            </div>
+                        </div>
+
+                        <div class="radio-container">
+                            <p class="semibold">Type accepté</p>
+                            <div class="inline gap-15">
+                                <label class="inline">Hongre</label>
+                                <input type="checkbox">
+                                <label class="inline">Jument</label>
+                                <input type="checkbox">
+                                <label class="inline">Entier</label>
+                                <input type="checkbox">
+                            </div>
+                        </div>
+
+                        <div class="block-input">
+                            <label class="semibold">Description</label>
+                            <textarea id="story" name="story" rows="5">Résumez votre itinéraire…</textarea>
+                        </div>
+                        <button class="btn-green btn-small">Enregistrer</button>
+                    </form>
+                    <!------ Carte ------>
+                    <div class="map w-60">
+                        <div class="map">
+                            <img src="assets/img/bo-new-map.png">
+                        </div>
+                        <div class="new-title inline border-thin w-100 gap-5">
+                            <img class="icon edit" src="assets/img/icons/icon-edit.png">
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!---- Footer ---->
+    <footer>
+        <script type="text/javascript" src="assets/js/trailup.js"></script>
+        <div class="footer-container">
+            <ul class="list-inline">
+                <li class="menu-item">Mentions légales</li>
+                <li class="menu-item">FAQ</li>
+                <li class="menu-item">Social</li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <p>©TrailUp - 2023</p>
+        </div>
+    </footer>
+</body>
+
+</html>

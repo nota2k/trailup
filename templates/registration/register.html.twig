@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="minus-header vert-fonce-bg vertical align-center justify-center w-100 full-h">
+    {{ form_start(registrationForm, {'attr': {'class': 'login jaune-pastel-bg vertical gap-15 w-30 justify-center'}}) }}
+
+        <h1 class="h3 mb-3 font-weight-normal text-center">Inscription</h1>
+        <!----- Identifiant ---->
+
+        <label class="semibold" for="inputUsername">Identifiant</label>
+        <input type="text" value="{{ field_value(registrationForm.username) }}" name="{{ field_name(registrationForm.username) }}" id="registration_form_username" class="form-control" required autofocus>
+        
+        <!----- MDP ---->
+        <label class="semibold" for="registration_form_plainPassword_first">Mot de passe</label>
+        <input type="password" name="{{ field_name(registrationForm.plainPassword.first) }}" id="registration_form_plainPassword_first" class="form-control" required>
+
+        <!-----Confirmation MDP ---->
+        <label class="semibold" for="registration_form_plainPassword_second">Confirmation du mot de passe</label>
+        <input type="password" name="{{ field_name(registrationForm.plainPassword.second) }}" id="registration_form_plainPassword_second" class="form-control" required>
+
+        <button class="btn-kaki w-30 self-center" type="submit">
+            Inscription
+        </button>
+        
+    {# {{ form_widget(registrationForm) }} #}
+    {{ form_end(registrationForm) }}
+    </form>
+
+</div>
+{% endblock %}

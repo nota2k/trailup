@@ -1,0 +1,43 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+{% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block content %}
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form, {'attr': {'class': 'colonnes gap-15'}}) }}
+        <div class="form-container vertical gap-15 colonne-50w">
+            <!------ Formulaire ------>
+            <!-- Nom -->
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.nom) }}
+
+            <!-- Prenom -->
+            {{ form_label(form.prenom, 'Prenom', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.prenom) }}
+
+            <!-- Ville -->
+            {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.ville) }}
+
+            <!-- Region -->
+            {{ form_label(form.region, 'Region', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.region) }}
+
+            <!-- Miniature -->
+            {{ form_label(form.miniature, 'Miniature', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.miniature) }}
+        </div>
+        <div class="apercu-thmb colonne-50w flex-3">
+            <img src="{{ asset( user.miniature )}}">
+        </div>
+
+        <button class="btn-green btn-small w150px">{{ button_label|default('Modifier') }}</button>
+    {{ form_end(form) }}
+{% endblock %}
+

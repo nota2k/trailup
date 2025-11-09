@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon espace{% endblock %}
+{% block head %}
+{{ parent() }}
+{% endblock %}
+{% block body %}
+{% if is_granted('ROLE_ADMIN') %}
+    <main class="backoffice admin">
+{% else %}
+    <main class="backoffice">
+{% endif %}
+    <div class="grid-2-colonnes colonnes-25__75 row-22_auto">
+        {% block infoblock %}
+        {% include("backoffice/bo-parts/info-sidebar.html.twig") %}
+        {% endblock %}
+        {% block sidebar %}
+        {% include("backoffice/bo-parts/sidebar.html.twig") %}
+        {% endblock %}
+        {% block breakcrumb %}
+            {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+        {% endblock %}
+        <div class="content padding-large">
+            {% block content %}
+            <!------ Content ------>
+            {% endblock %}
+        </div>
+        
+    </div>
+</main>
+{% endblock %}

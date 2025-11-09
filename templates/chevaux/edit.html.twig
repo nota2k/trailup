@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Chevaux{% endblock %}
+
+{% block body %}
+    <h1>Edit Chevaux</h1>
+
+    {{ include('chevaux/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_chevaux_list') }}">back to list</a>
+
+    {{ include('chevaux/_delete_form.html.twig') }}
+{% endblock %}

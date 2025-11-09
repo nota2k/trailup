@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block title %}TrailUp - Trouver vos compagnons de balades!{% endblock %}
+{% block body %}
+    <!---- Hero Banner ---->
+    <section class="hero-banner full-h img-bg">
+        <div class="intro-block">
+            <h1>Trouvez vos compagnons de balades !</h1>
+            <div class="search-container">
+                <form class="search">
+                    <input type="text" name="" placeholder="Où?">
+                    <select name="pets" id="pet-select">
+                        <option value="">Difficulté</option>
+                        <option value="facile">Facile</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="difficile">Difficile</option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="Mot-clef">
+                    <button class="btn-kaki" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!---- Section Avantages ---->
+    <section class="avantages full-h vert-fonce-bg">
+        <div class="colonnes-2 contained">
+            <div id="colonne-g" class="colonne-50w vertical items-vertical-center">
+                <h2>Avantage n°1</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+                <h2>Avantage n°2</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+                <h2>Avantage n°3</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+            </div>
+            <div id="colonne-d" class="colonne-50w">
+                <div class="schema-anime">
+                    <img class="relative" src="assets/img/chemin.svg">
+                    <img class="absolute front" src="assets/img/scene-front.png">
+                    <div class="trajectoire-container absolute">
+                        <svg class="trajectoire absolute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 882.54 887.85">
+                            <path class="trace" d="M191.55,120.87c-16.24,9.61-31.92,20-46.92,30.71C78,196.14,32.16,295.8,92.3,363.21c35.89,38.68,98.87,44.24,129.81,88.57,21.64,31.3,3.46,117.41-12.54,149.57-11.93,24-25,51-16.48,76.45,7.51,22.36,29.49,36,49.9,47.86,72,37.55,142.33,99.05,227.63,97.54,37.25-1.91,76.14-27.69,79.39-64.85,2.27-26-12.72-52.26-5.69-77.35,17.18-56.85,147.88-64.7,200.91-85.53,36.73-9.9,87.51-35.75,69.08-83.67C783.67,453,666.32,458.37,681,355.85c6.42-25.91,28.13-44.58,46.43-64,46.15-43.42,37.27-104.37-30.1-113.64-25.16-3.53-50.76.91-76.14-.28a172.92,172.92,0,0,1-90.89-31.12c-42.92-34.44-82.61-79.53-141.85-81.57-69.6-4.85-137.08,20.25-196.91,55.65" />
+                        </svg>
+                        <img class="suiveur absolute" src="assets/img/suiveur.svg">
+                    </div>
+                    <img class="absolute back" src="assets/img/scene-back.png">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!---- Section Avantages ---->
+    <section class="avantages full-h brun-bg">
+        <div class="colonnes-2 contained">
+            <div id="colonne-g" class="colonne-50w">
+                <h2>Avantage n°1</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+                <h2>Avantage n°2</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+                <h2>Avantage n°3</h2>
+                <p>Application mobile GPS de randonnée pour découvrir tous les sentiers du monde.</p>
+            </div>
+            <div id="colonne-d" class="colonne-50w">
+                <div class="schema-anime">
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

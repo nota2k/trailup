@@ -1,0 +1,88 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block content %}
+    <table class="filter w-100">
+        <thead>
+
+            <th class="head-filter text-center">ID</th>
+            <th class="head-filter">Titre<span class="sort-icon">▾</span></th>
+            {# <th class="head-filter">Denivelé<span class="sort-icon">▾</span></th> #}
+            <th class="head-filter">Distance<span class="sort-icon">▾</span></th>
+            <th class="head-filter">Niveau<span class="sort-icon">▾</span></th>
+            <th class="head-filter">Durée<span class="sort-icon">▾</span></th>
+            <th class="head-filter text-center">Validé</th>
+            <th class="head-filter">Voir</th>
+            <th class="head-filter">Supprimer</th>
+        </thead>
+        <tbody class="border-thin">
+            {% for itineraire in itineraires %}
+                {% if itineraire.validation == false %}
+                <tr class="semibold rouge">
+                    <!--Itinéraires-->
+                    <td class="td__nom text-center">{{ itineraire.id }}
+                    </td>
+                    <td class="td__nom">{{ itineraire.titre }}</td>
+                    <td class="distance text-center">{{ itineraire.distance }} km</td>
+                    <td class="niveau text-center">{% for niveau in itineraire.niveau %}
+                            {{ niveau }}
+                        {% endfor %}</td>
+                    <td class="duree text-center">{{ itineraire.duree }}</td>
+                    <td class="validation text-center">
+                    {% if itineraire.validation == false %}
+                        Non
+                    {% endif %}
+                    </td>
+                    <td class="icon-btn">
+                        <div class="icon-container">
+                            <a class="btn-small no-bg voir" href="{{ path('app_itineraires_show', {'id': itineraire.id}) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 30 25" fill="none">
+                                    <path d="M17.7143 12.9998C17.7143 13.7576 17.4133 14.4843 16.8775 15.0202C16.3416 15.556 15.6149 15.857 14.8571 15.857C14.0994 15.857 13.3727 15.556 12.8368 15.0202C12.301 14.4843 12 13.7576 12 12.9998C12 12.2421 12.301 11.5154 12.8368 10.9795C13.3727 10.4437 14.0994 10.1427 14.8571 10.1427C15.6149 10.1427 16.3416 10.4437 16.8775 10.9795C17.4133 11.5154 17.7143 12.2421 17.7143 12.9998Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8572 21C9.45034 21 5.07599 17.7277 3.0793 13C5.07599 8.27227 9.45034 5 14.8572 5C20.264 5 24.6383 8.27227 26.635 13C24.6383 17.7277 20.264 21 14.8572 21Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="icon-btn">
+                        {{ include('backoffice/itineraires/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+                {% else %}
+
+                    <tr class="gris">
+                    <!--Itinéraires-->
+                    <td class="td__nom text-center">{{ itineraire.id }}
+                    </td>
+                    <td class="td__nom">{{ itineraire.titre }}</td>
+                    <td class="distance text-center">{{ itineraire.distance }} km</td>
+                    <td class="niveau text-center">{% for niveau in itineraire.niveau %}
+                            {{ niveau }}
+                        {% endfor %}</td>
+                    <td class="niveau text-center">{{ itineraire.duree }}</td>
+                    <td class="validation text-center">
+                    {% if itineraire.validation == true %}
+                        Oui
+                    {% endif %}
+                    </td>
+                    <td class="icon-btn">
+                        <div class="icon-container">
+                            <a class="btn-small no-bg voir" href="{{ path('admin_itineraires_show', {'id': itineraire.id}) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 30 25" fill="none">
+                                    <path d="M17.7143 12.9998C17.7143 13.7576 17.4133 14.4843 16.8775 15.0202C16.3416 15.556 15.6149 15.857 14.8571 15.857C14.0994 15.857 13.3727 15.556 12.8368 15.0202C12.301 14.4843 12 13.7576 12 12.9998C12 12.2421 12.301 11.5154 12.8368 10.9795C13.3727 10.4437 14.0994 10.1427 14.8571 10.1427C15.6149 10.1427 16.3416 10.4437 16.8775 10.9795C17.4133 11.5154 17.7143 12.2421 17.7143 12.9998Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M14.8572 21C9.45034 21 5.07599 17.7277 3.0793 13C5.07599 8.27227 9.45034 5 14.8572 5C20.264 5 24.6383 8.27227 26.635 13C24.6383 17.7277 20.264 21 14.8572 21Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="icon-btn">
+                        {{ include('backoffice/admin/itineraires/_delete_form.html.twig') }}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block content %}
+    <h1>Modifier l'itinéraire</h1>
+
+    {{ include('backoffice/itineraires/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_itineraires_liste') }}">back to list</a>
+
+    {{ include('backoffice/itineraires/_delete_form.html.twig') }}
+{% endblock %}

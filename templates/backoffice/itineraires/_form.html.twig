@@ -1,0 +1,59 @@
+{{ form_start(form, {'attr': {'class': 'new-map vertical colonne-20w gap-15'}}) }}
+<!------ Formulaire ------>
+    <div class="block-input">
+        <p class="semibold">Titre</p>
+        {{  form_row(form.titre, {'attr': {'class': 'inline gap-15 w-100'}}) }}
+    </div>
+    
+    <div class="block-input">
+        <label class="semibold">Lieu de départ</label>
+        {{ form_row(form.depart, {'attr': {'class': 'vertical w-100'}}) }}
+    </div>
+    <div class="block-input">
+        {{ form_label(form.duree, 'Durée', {'label_attr': {'class': 'semibold'}}) }}
+        {{  form_widget(form.duree, {'attr': {'class': 'inline gap-15'}}) }}
+    </div>
+   <div class="block-input">
+        <p class="semibold">Journée</p>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="block-input">
+        <p class="semibold">Allures</p>
+        <div class="inline gap-15">
+        {{ form_row(form.allures,{'attr': {'class': 'inline gap-15'}}) }}
+        </div>
+    </div>
+     <div class="radio-container">
+        <p class="semibold">Niveau</p>
+        <div class="inline gap-15">
+            {{ form_row(form.niveau, {'attr':{'class':'inline'}}) }}
+        </div>
+    </div>
+    <div class="block-input">
+        <p class="semibold">Type accepté</p>
+        {{  form_row(form.accepte, {'attr': {'class': 'inline gap-15'}}) }}
+    </div>
+    <div class="block-input">
+        {{ form_label(form.duree, 'Distance', {'label_attr': {'class': 'semibold'}}) }}
+        {{  form_widget(form.distance, {'attr': {'class': 'inline gap-15'}}) }}
+    </div>
+    
+    <div class="block-input">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'semibold'}}) }}
+        <textarea
+            name="{{ field_name(form.description) }}"
+            value="{{ field_value(form.description) }}"
+            placeholder="Décrivez votre itinéraire..."
+            class="form-control"
+        ></textarea>
+    </div>
+    <div class="block-input">
+        {{ form_label(form.publie, 'Publier', {'label_attr': {'class': 'semibold'}}) }}
+        {{ form_row(form.publie, {'attr': {'class': 'vertical'}}) }}
+    </div>
+
+    <button class="btn-green w-30 self-center btn-small">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

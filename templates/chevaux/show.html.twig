@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chevaux{% endblock %}
+
+{% block body %}
+    <h1>Chevaux</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ chevaux.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ chevaux.nom }}</td>
+            </tr>
+            <tr>
+                <th>Race</th>
+                <td>{{ chevaux.race }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ chevaux.age ? chevaux.age|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Photo01</th>
+                <td>{{ chevaux.photo01 }}</td>
+            </tr>
+            <tr>
+                <th>Photo02</th>
+                <td>{{ chevaux.photo02 }}</td>
+            </tr>
+            <tr>
+                <th>Photo03</th>
+                <td>{{ chevaux.photo03 }}</td>
+            </tr>
+            <tr>
+                <th>Sexe</th>
+                <td>{{ chevaux.sexe }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_chevaux_list') }}">back to list</a>
+
+    <a href="{{ path('app_chevaux_edit', {'id': chevaux.id}) }}">edit</a>
+
+    {{ include('chevaux/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block content %}
+    <h1>Itinéraires</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Niveau</th>
+                <td>{% for niveau in itineraire.niveau %}
+                    {{ niveau }}
+                {% endfor %}</td>
+            </tr>
+            <tr>
+                <th>Allures</th>
+                <td>
+                {% for allure in itineraire.allures %}
+                    {{ allure }}
+                {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Depart</th>
+                <td>{{ itineraire.depart }}</td>
+            </tr>
+            <tr>
+                <th>Distance</th>
+                <td>{{ itineraire.distance }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ itineraire.duree }}</td>
+            </tr>
+            <tr>
+                <th>Accepte</th>
+                <td>{{ itineraire.accepte|join(', ') }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ itineraire.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_itineraires') }}">Retour</a>
+
+    <a href="{{ path('app_itineraires_edit', {'id': itineraire.id}) }}">Enregistrer</a>
+
+    {{ include('backoffice/itineraires/_delete_form.html.twig') }}
+{% endblock %}

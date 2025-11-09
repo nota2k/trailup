@@ -1,0 +1,24 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+{% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block content %}
+    <a href="{{ path('app_itineraires_liste') }}">Retour</a>
+<div class="colonnes gap-30">
+    
+
+    {{ include('backoffice/itineraires/_form.html.twig') }}
+    <!------ Carte ------>
+    <div class="map w-60">
+        <div class="map">
+            <img src="{{ asset('assets/img/placeholder-map.png') }}">
+        </div>
+        {# <div class="new-title inline border-thin w-100 gap-5">
+            <img class="icon edit" src="{{ asset('assets/img/icons/icon-edit.png')}}">
+            <input class="w-100" name="{{ field_name(form.titre) }}" type="text">
+        </div> #}
+    </div>
+</div>
+{% endblock %}

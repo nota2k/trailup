@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+{% block title %}Chercher un itinéraire{% endblock %}
+{% block body %}
+{% block breakcrumb %}
+<!------ Breakcrumb Component----->
+<div class="breakcrumb jaune-light-bg">
+    <div class="search-container">
+        <form name="search" class="search" method="get">
+            <input type="text" name="depart" placeholder="Où?" value="{{ param.depart }}">
+            <select name="niveau" id="niveau-select" value="{{ param.niveau }}">
+                <option value="">Difficulté</option>
+                <option {{ param.niveau }} value="facile">Facile</option>
+                <option {{ param.niveau }} value="intermediaire">Intermediaire</option>
+                <option {{ param.niveau }} value="difficile">Difficile</option>
+            </select>
+            <input type="range" id="distance-max" name="distance" min="0" max="200" value="{{ param.distance }}" />
+            <input placeholder="0" type="number" id="duree-min" name="dureemin" value="{{ param.duree_min }}" />
+            <input placeholder="200" type="number" id="duree-max" name="dureemax" value="{{ param.duree_max }}" />
+            <input type="text" name="keyword" placeholder="Mot-clef" value="{{ param.keyword }}">
+            <button name="search" class="btn-kaki" type="submit">Rechercher</button>
+            <button name="reset" class="btn-green" type="submit">Réinitialiser</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+<!------ Annonces + Map container -------->
+<div class="annonces colonnes-2">
+    <!----- Colonne gauche - Annonces scroll ------>
+    <div class="all-annonces-container colonne-50w">
+        <div class="all-annonces scrolling">
+            <div class="sort inline gap-30">
+                <div>
+                    <p class="sort-filter" onclick="getValueSort()">Distance <i class="sort-distance" sort="no">&#9660;</i></p>
+                </div>
+                <div>
+                    <p class="sort-filter">Durée <i class="sort-distance" sort="no">&#9660;</i></p>
+                </div>
+            </div>
+            {% for annonce in itineraires %}
+
+            {% if annonce %}
+            <section class="post-wrapper border-thin">
+                <div class="colonnes-2">
+                    <div class="colonne-80w">
+                        <div id="depart" class="icon__info align-center">
+                            <div class="icon-container">
+                                <img class="icon" src="assets/img/icons/icon-localisation.svg">
+                            </div>
+                            <p class="depart">{{ annonce.itineraire.depart }}</p>
+                        </div>
+                        <h2 class="kaki">{{ annonce.itineraire.titre }} </h2>
+                        <div class="inline info-post">
+                            <div id="distance" class="icon__info">
+                                <div class="icon-container">
+                                    <img class="icon" src="assets/img/icons/icon-distance.png">
+                                </div>
+                                <p distance="" class="distance">{{ annonce.itineraire.distance }}</p>
+                                <p>km</p>
+                            </div>
+                            <div id="duree" class="icon__info">
+                                <div class="icon-container">
+                                    <img class="icon" src="assets/img/icons/icon-temps.png">
+                                </div>
+                                <p class="duree">{{ annonce.itineraire.duree }}</p>
+                                <p>h</p>
+                            </div>
+                            <div id="niveau" class="icon__info">
+                                <div class="icon-container">
+                                    <img class="icon" src="assets/img/icons/icon-niveau.png">
+                                    {# {{ dump(annonce) }} #}
+                                </div>
+                                <p class="niveau">{{ annonce.itineraire.niveau|join() }}</p>
+                            </div>
+                        </div>
+                        <p class="resume">{{ annonce.itineraire.description }}</p>
+                    </div>
+                    <div class="colonne-20w vertical gap-5">
+                        <div class="thmb-user">
+                            {# <img src="{{ asset( annonce.createur.miniature )}}"> #}
+                            <img src="{{ asset('assets/img/thmb-user.png')}}">
+                            
+                        </div>
+                        <a href="" class="semibold username">
+                            {# <p>{{ dump(annonce.createur.utilisateur.username) }}</p> #}
+                        </a>
+                        <p class="localisation">
+                        </p>
+                        <a href="" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
+                        {% set entry = "" %}
+                        {% for itin in user_itineraire %}
+                            {% if itin.id == annonce.itineraire.id %}
+                                {% set entry = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if entry %}
+                            {{ include('liste_itineraires/_delete_form.html.twig') }}
+                        {% else %}
+                           {{ include('liste_itineraires/_form.html.twig') }}
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            {% else %}
+                <p>Aucune annonce trouvée</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <!----End Scroll---->
+        <div class="pagination-wrapper">
+            <span class="inline">
+                <a class="number jaune-bg">1</a>
+                <a class="number">2</a>
+                <a class="number">3</a>
+            </span>
+        </div>
+    </div>
+    <!----- Colonne droite - Carte ------>
+    <div class="map-container colonne-50w">
+        <img class="map-placeholder" src="assets/img/placeholder-map.png">
+    </div>
+    <!------ Fin container -------->
+</div>
+{% endblock %}

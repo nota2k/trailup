@@ -1,0 +1,32 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+{% block breakcrumb %}
+    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+    {% block content %}
+    <div class="profil-block">
+        
+        <div class="user-thmb-container w-30">
+            <img src="{{ asset( user.miniature )}}">
+        </div>
+        <div class="block">
+            <p class="semibold">Nom</p>
+            <p>{{ user.nom }}</p>
+            <p class="semibold">Pseudonyme</p>
+            <p>{{ user.user.username }}</p>
+        </div>
+        <div class="block">
+        <p class="semibold">Prenom</p>
+        <p>{{ user.prenom }}</p>
+        <p class="semibold">Ville</p>
+        <p>{{ user.ville }}</p>
+        <p class="semibold">Region</p>
+        <p>{{ user.region }}</p>
+        {# <p class="semibold">Chevaux</p> #}
+        {# <p>{{ chevaux.nom }}</p> #}
+        </div>
+
+        <button class="btn-green"><a href="{{ path('app_profil_edit',{'id': user.id} ) }}">Modifier</a></button>
+    </div>
+                
+    {# <a href="{{ path('app_profil_new') }}">Create new</a> #}
+    {% endblock %}

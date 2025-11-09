@@ -1,0 +1,43 @@
+{% block infoblock %}
+<!------ Account ------>
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="account padding-20 bleu-light-bg inset-shadow">
+{% else %}
+    <div class="account padding-20 jaune-pastel-bg inset-shadow">
+{% endif %}
+    <div class="h-100 vertical justify-between">
+        <!--Row 1-->
+        <div class="row-auto inline justify-between gap-15">
+            <!--Thumbnail-->
+            <div class="user-thmb-container self-center">
+                <img src="{{ asset( user.miniature )}}">
+            </div>
+            <!--User Intro-->
+            <div class="user-intro">
+                <h1>{{ app.user.username }}</h1>
+                <div class="follow inline">
+                    <div class="followers-wrapper">
+                        <p>Followers</p>
+                        <p class="regular">10</p>
+                    </div>
+                    <div class="followers-wrapper">
+                        <p>Suivi(e)s</p>
+                        <p class="regular">40</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Row 2-->
+        <div class="row-auto inline justify-center gap-15">
+            <div class="w-30 radius-5 blanc-bg vertical padding-10 text-center">
+                <p class="text-s">Itinéraires</p>
+                <p class="regular">10</p>
+            </div>
+            <div class="w-30 radius-5 blanc-bg vertical padding-10 text-center">
+                <p class="text-s">Kilomètres</p>
+                <p class="regular">674</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

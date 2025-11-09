@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    {{ include('info_user/_form.html.twig') }}
+
+    <a href="{{ path('app_info_user_index') }}">back to list</a>
+{% endblock %}

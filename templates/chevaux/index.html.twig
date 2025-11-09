@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chevaux index{% endblock %}
+
+{% block body %}
+    <h1>Chevaux index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Propriétaire</th>
+                <th>Nom</th>
+                <th>Race</th>
+                <th>Age</th>
+                <th>Photo01</th>
+                <th>Photo02</th>
+                <th>Photo03</th>
+                <th>Sexe</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cheval in chevaux %}
+            <tr>
+                <td>{{ cheval.id }}</td>
+                <td>{{ cheval.proprietaire.username }}</td>
+                <td>{{ cheval.nom }}</td>
+                <td>{{ cheval.race }}</td>
+                <td>{{ cheval.age ? cheval.age|date('Y-m-d') : '' }}</td>
+                <td>{{ cheval.photo01 }}</td>
+                <td>{{ cheval.photo02 }}</td>
+                <td>{{ cheval.photo03 }}</td>
+                <td>{{ cheval.sexe }}</td>
+                <td>
+                    <a href="{{ path('app_chevaux_list', {'id': cheval.id}) }}">show</a>
+                    <a href="{{ path('app_chevaux_edit', {'id': cheval.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_chevaux_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TrailUp - Trouver vos compagnons de balades!</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+</head>
+
+<body>
+    <!---- Header ---->
+    <header>
+        <div class="header-wrapper">
+            <div class="site-branding">
+                <a href="index.html"><img src="assets/img/logo.png">
+            </div>
+            <nav class="menu-header">
+                <ul class="list-inline">
+                    <li class="menu-item">Carte</li>
+                    <li class="menu-item">Chercher une balade</li>
+                    <li class="menu-item">À propos</li>
+                    <li class="menu-item">Fonctionnalités</li>
+                </ul>
+            </nav>
+            <nav class="log-wrapper">
+                <a href="" class="register">S'inscrire</a>
+                <a href="" class="connect">
+                    <button class="btn-green">
+                        Connexion</button></a>
+            </nav>
+        </div>
+    </header>
+    <!---- Main ---->
+    <main class="annonces">
+        <!------ Breakcrumb -------->
+        <div class="breakcrumb jaune-light-bg">
+            <div class="search-container">
+                <form class="search">
+                    <input type="text" name="" placeholder="Où?">
+                    <select name="pets" id="pet-select">
+                        <option value="">Difficulté</option>
+                        <option value="facile">Facile</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="difficile">Difficile</option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="Mot-clef">
+                    <button class="btn-kaki" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </div>
+
+         <!------ Annonces + Map container -------->
+        <div class="annonces colonnes-2">
+
+            <!----- Colonne gauche - Annonces scroll ------>
+            <div class="all-annonces-container colonne-50w">
+                <div class="all-annonces scrolling">
+                    
+                    <section class="post-wrapper border-thin">
+                        <div class="colonnes-2">
+                            <div class="colonne-80w">
+                                <h2 class="kaki">Roche Parnal et Montagne Sous-Dîne en traversée </h2>
+                                <div class="inline info-post">
+                                    <div id="distance" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-distance.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="denivele" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-denivele.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="duree" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-temps.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="niveau" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-niveau.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    
+                                </div>
+                                <p class="resume">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor orci dui, in facilisis lacus auctor a. Maecenas tincidunt eget ex quis hendrerit.</p>
+                                <button type="submit" class="jaune-bg voir">Voir</button>
+                            </div>
+
+                            <div class="colonne-20w vertical gap-5">
+                                <div class="thmb-user">
+                                    <img src="assets/img/thmb-user.png">
+                                </div>
+                                <a href="" class="semibold username"><p>Lolipop</p></a>
+                                <p class="localisation">Brignais</p>
+                                <a href="" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="post-wrapper border-thin">
+                        <div class="colonnes-2">
+                            <div class="colonne-80w">
+                                <h2 class="kaki">Roche Parnal et Montagne Sous-Dîne en traversée </h2>
+                                <div class="inline info-post">
+                                    <div id="distance" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-distance.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="denivele" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-denivele.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="duree" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-temps.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="niveau" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-niveau.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    
+                                </div>
+                                <p class="resume">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor orci dui, in facilisis lacus auctor a. Maecenas tincidunt eget ex quis hendrerit.</p>
+                                <button type="submit" class="jaune-bg voir">Voir</button>
+                            </div>
+
+                            <div class="colonne-20w vertical gap-5">
+                                <div class="thmb-user">
+                                    <img src="assets/img/thmb-user.png">
+                                </div>
+                                <a href="" class="semibold username"><p>Lolipop</p></a>
+                                <p class="localisation">Brignais</p>
+                                <a href="" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="post-wrapper border-thin">
+                        <div class="colonnes-2">
+                            <div class="colonne-80w">
+                                <h2 class="kaki">Roche Parnal et Montagne Sous-Dîne en traversée </h2>
+                                <div class="inline info-post">
+                                    <div id="distance" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-distance.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="denivele" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-denivele.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="duree" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-temps.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    <div id="niveau" class="icon__info">
+                                        <div class="icon-container">
+                                            <img class="icon" src="assets/img/icons/icon-niveau.png">
+                                        </div>
+                                        <p>14,40 km</p>
+                                    </div>
+                                    
+                                </div>
+                                <p class="resume">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor orci dui, in facilisis lacus auctor a. Maecenas tincidunt eget ex quis hendrerit.</p>
+                                <button type="submit" class="jaune-bg voir">Voir</button>
+                            </div>
+
+                            <div class="colonne-20w vertical gap-5">
+                                <div class="thmb-user">
+                                    <img src="assets/img/thmb-user.png">
+                                </div>
+                                <a href="" class="semibold username"><p>Lolipop</p></a>
+                                <p class="localisation">Brignais</p>
+                                <a href="" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!----End Scroll---->
+                <div class="pagination-wrapper">
+                    <span class="inline">
+                        <a class="number jaune-bg">1</a>
+                        <a class="number">2</a>
+                        <a class="number">3</a>
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!----- Colonne droite - Carte ------>
+            <div class="map-container colonne-50w">
+                <img class="map-placeholder" src="assets/img/placeholder-map.png">
+            </div>
+
+            <!------ Fin container -------->
+        </div>
+    </main>
+    <!---- Footer ---->
+    <footer>
+        <script type="text/javascript" src="assets/js/trailup.js"></script>
+        <div class="footer-container">
+            <ul class="list-inline">
+                <li class="menu-item">Mentions légales</li>
+                <li class="menu-item">FAQ</li>
+                <li class="menu-item">Social</li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <p>©TrailUp - 2023</p>
+        </div>
+    </footer>
+</body>
+
+</html>
