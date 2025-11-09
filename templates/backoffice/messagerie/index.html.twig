@@ -8,34 +8,65 @@
         <thead>
             <th class="head-filter">Sujet</th>
             <th class="head-filter">Destinataire</th>
+            <th class="head-filter">Dernier message</th>
             <th class="head-filter">Date<span class="sort-icon">▾</span></th>
             <th class="head-filter text-center">Voir</th>
             <th class="head-filter text-center">Supprimer</th>
         </thead>
 
         <tbody class="border-thin">
-            {% for discussion in discussions %}
-                <tr class="msg_new">
-                    <!--Itinéraires-->
-                    <td class="td__nom">{{ discussion.sujet }}</td>
-                    <td class="destinataire">{{ discussion.user1.username }}</td>
-                    <td class="date">{{ discussion.messages[0].date|date }}</td>
-                    <td class="icon-btn">
-                <button type="submit" class="btn-small no-bg voir">
-                    <a href="{{ path('app_conversation_show', {'id': discussion.id}) }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 30 25" fill="none">
-                            <path d="M17.7143 12.9998C17.7143 13.7576 17.4133 14.4843 16.8775 15.0202C16.3416 15.556 15.6149 15.857 14.8571 15.857C14.0994 15.857 13.3727 15.556 12.8368 15.0202C12.301 14.4843 12 13.7576 12 12.9998C12 12.2421 12.301 11.5154 12.8368 10.9795C13.3727 10.4437 14.0994 10.1427 14.8571 10.1427C15.6149 10.1427 16.3416 10.4437 16.8775 10.9795C17.4133 11.5154 17.7143 12.2421 17.7143 12.9998Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14.8572 21C9.45034 21 5.07599 17.7277 3.0793 13C5.07599 8.27227 9.45034 5 14.8572 5C20.264 5 24.6383 8.27227 26.635 13C24.6383 17.7277 20.264 21 14.8572 21Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </a>
-                </button></td>
-                <td class="icon-btn">
-                    <button type="submit" class="btn-small no-bg delete"></button>
-                </td>
+            {% if discussions|length > 0 %}
+                {% for discussion in discussions %}
+                    {% set destinataire = (discussion.user1.id == app.user.id) ? discussion.user2 : discussion.user1 %}
+                    {% set dernierMessage = discussion.messages|last %}
+                    <tr class="msg_new">
+                        <td class="td__nom">{{ discussion.sujet }}</td>
+                        <td class="destinataire">{{ destinataire.username }}</td>
+                        <td class="destinataire">
+                            {% if dernierMessage %}
+                                {{ dernierMessage.body|slice(0, 50) }}{% if dernierMessage.body|length > 50 %}...{% endif %}
+                            {% else %}
+                                Aucun message
+                            {% endif %}
+                        </td>
+                        <td class="date">
+                            {% if dernierMessage and dernierMessage.date %}
+                                {{ dernierMessage.date|date('d/m/Y') }}
+                                {% if dernierMessage.heure %}
+                                    à {{ dernierMessage.heure|date('H:i') }}
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="icon-btn">
+                            <button type="submit" class="btn-small no-bg voir">
+                                <a href="{{ path('app_conversation_show', {'id': discussion.id}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 30 25" fill="none">
+                                        <path d="M17.7143 12.9998C17.7143 13.7576 17.4133 14.4843 16.8775 15.0202C16.3416 15.556 15.6149 15.857 14.8571 15.857C14.0994 15.857 13.3727 15.556 12.8368 15.0202C12.301 14.4843 12 13.7576 12 12.9998C12 12.2421 12.301 11.5154 12.8368 10.9795C13.3727 10.4437 14.0994 10.1427 14.8571 10.1427C15.6149 10.1427 16.3416 10.4437 16.8775 10.9795C17.4133 11.5154 17.7143 12.2421 17.7143 12.9998Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M14.8572 21C9.45034 21 5.07599 17.7277 3.0793 13C5.07599 8.27227 9.45034 5 14.8572 5C20.264 5 24.6383 8.27227 26.635 13C24.6383 17.7277 20.264 21 14.8572 21Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                            </button>
+                        </td>
+                        <td class="icon-btn">
+                            <form method="post" action="{{ path('app_conversation_delete', {'id': discussion.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette conversation ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ discussion.id) }}">
+                                <button type="submit" class="btn-small no-bg delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M5 5L15 15M15 5L5 15" stroke="black" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucune conversation</td>
                 </tr>
-            {% endfor %}
+            {% endif %}
         </tbody>
     </table>
-</div>
 </div>
 {% endblock %}

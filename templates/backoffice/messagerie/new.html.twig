@@ -1,0 +1,28 @@
+{% extends 'backoffice/bo-parts/content.html.twig' %}
+
+{% block breakcrumb %}
+    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+{% endblock %}
+
+{% block content %}
+    <h1>Nouvelle conversation</h1>
+
+    {{ form_start(form, {'attr': {'class': 'vertical gap-15'}}) }}
+        <div class="block-input">
+            {{ form_label(form.user2, 'Destinataire', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.user2, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.user2) }}
+        </div>
+        
+        <div class="block-input">
+            {{ form_label(form.sujet, 'Sujet', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.sujet, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.sujet) }}
+        </div>
+
+        <button class="btn-green">{{ button_label|default('Créer la conversation') }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_messagerie') }}">Retour à la messagerie</a>
+{% endblock %}
+

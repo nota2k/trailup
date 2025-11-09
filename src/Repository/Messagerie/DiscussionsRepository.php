@@ -3,6 +3,7 @@
 namespace App\Repository\Messagerie;
 
 use App\Entity\Messagerie\Discussions;
+use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -44,6 +45,19 @@ class DiscussionsRepository extends ServiceEntityRepository
 
         // returns an array of arrays (i.e. a raw data set)
         return $result->fetchAssociative();
+   }
+
+   /**
+    * @return Discussions[] Returns an array of Discussions objects where the user is user1 or user2
+    */
+   public function findByUser(Utilisateur $user): array
+   {
+       return $this->createQueryBuilder('d')
+           ->where('d.user1 = :user OR d.user2 = :user')
+           ->setParameter('user', $user)
+           ->orderBy('d.id', 'DESC')
+           ->getQuery()
+           ->getResult();
    }
 
 //    public function findOneBySomeField($value): ?Discussions

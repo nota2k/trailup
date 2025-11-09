@@ -41,6 +41,14 @@ class Messages
     #[ORM\Column(type: Types::TEXT)]
     private ?string $body = null;
 
+    public function __construct()
+    {
+        $this->date = new DateTime('now');
+        $this->heure = new DateTime('now');
+        $this->lu = false;
+        $this->prio = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,7 +61,7 @@ class Messages
 
     public function setDate(\DateTimeInterface $date): static
     {
-        $this->date = new DateTime('now');
+        $this->date = $date;
 
         return $this;
     }

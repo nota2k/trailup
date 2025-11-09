@@ -1,49 +1,56 @@
 {% extends 'backoffice/bo-parts/content.html.twig' %}
 
-
 {% block breakcrumb %}
     {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
 {% endblock %}
 
 {% block content %}
-    <h1>Itinéraires</h1>
+    <div class="conversation-container">
+        <div class="conversation-header flex justify-between align-center mb-20">
+            <div>
+                <h1>{{ discussion.sujet }}</h1>
+                <p class="text-muted">
+                    Conversation avec 
+                    {% set autreUser = (discussion.user1.id == app.user.id) ? discussion.user2 : discussion.user1 %}
+                    {{ autreUser.username }}
+                </p>
+            </div>
+            <a href="{{ path('app_messagerie') }}" class="btn-small">Retour</a>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Sujet</th>
-                <td>{{ discussion.sujet }}</td>
-            </tr>
-            <tr>
-                <th>Allures</th>
-                <td>{{ itineraire.allures }}</td>
-            </tr>
-            <tr>
-                <th>Depart</th>
-                <td>{{ itineraire.depart }}</td>
-            </tr>
-            <tr>
-                <th>Distance</th>
-                <td>{{ itineraire.distance }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ itineraire.duree }}</td>
-            </tr>
-            <tr>
-                <th>Accepte</th>
-                <td>{{ itineraire.accepte|join(', ') }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ itineraire.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="messages-container border-thin padding-large mb-20" style="max-height: 500px; overflow-y: auto;">
+            {% if messages|length > 0 %}
+                {% for message in messages %}
+                    <div class="message {% if message.expediteur.id == app.user.id %}message-sent{% else %}message-received{% endif %} mb-15">
+                        <div class="message-header flex align-center gap-10 mb-5">
+                            <strong>{{ message.expediteur.username }}</strong>
+                            <span class="text-muted">
+                                {% if message.date %}
+                                    {{ message.date|date('d/m/Y') }}
+                                    {% if message.heure %}
+                                        à {{ message.heure|date('H:i') }}
+                                    {% endif %}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="message-body">
+                            {{ message.body|nl2br }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-muted">Aucun message dans cette conversation</p>
+            {% endif %}
+        </div>
 
-    <a href="{{ path('app_messagerie') }}">Retour</a>
-
-    <a href="{{ path('app_itineraires_edit', {'id': itineraire.id}) }}">Enregistrer</a>
-
-    {{ include('backoffice/itineraires/_delete_form.html.twig') }}
+        <div class="message-form">
+            {{ form_start(form, {'attr': {'class': 'vertical gap-15'}}) }}
+                <div class="block-input">
+                    {{ form_widget(form.body, {'attr': {'class': 'form-control w-100'}}) }}
+                    {{ form_errors(form.body) }}
+                </div>
+                <button type="submit" class="btn-green">Envoyer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

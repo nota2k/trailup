@@ -11,3 +11,5 @@
 
 # Configuration PHP locale
 .user.ini
+
+.DS_Store
