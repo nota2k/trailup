@@ -1,5 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block title %}Chercher un itinéraire{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+.custom-marker {
+    background: transparent;
+    border: none;
+}
+#map {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+}
+</style>
+{% endblock %}
 {% block body %}
 {% block breakcrumb %}
 <!------ Breakcrumb Component----->
@@ -39,7 +55,7 @@
             {% for annonce in itineraires %}
 
             {% if annonce %}
-            <section class="post-wrapper border-thin">
+            <section class="post-wrapper border-thin" id="itineraire-{{ annonce.itineraire.id }}" data-depart="{{ annonce.itineraire.depart }}" data-code-postal="{{ annonce.itineraire.codePostal }}">
                 <div class="colonnes-2">
                     <div class="colonne-80w">
                         <div id="depart" class="icon__info align-center">
@@ -127,8 +143,113 @@
     </div>
     <!----- Colonne droite - Carte ------>
     <div class="map-container colonne-50w">
-        <img class="map-placeholder" src="assets/img/placeholder-map.png">
+        <div id="map"></div>
     </div>
     <!------ Fin container -------->
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function() {
+    // Initialiser la carte Leaflet centrée sur la France
+    const map = L.map('map').setView([46.6034, 1.8883], 6);
+    
+    // Ajouter la couche de tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Récupérer tous les itinéraires depuis le DOM
+    const itineraires = document.querySelectorAll('[id^="itineraire-"]');
+    const markers = [];
+    const bounds = [];
+    
+    // Fonction pour géocoder une ville et ajouter un marqueur
+    async function addMarkerForItineraire(section) {
+        const itineraireId = section.id.replace('itineraire-', '');
+        const depart = section.dataset.depart;
+        const codePostal = section.dataset.codePostal || '';
+        
+        if (!depart) return;
+        
+        try {
+            // Géocoder la ville
+            let geocodeUrl = '{{ path('api_geo_geocode') }}?q=' + encodeURIComponent(depart);
+            if (codePostal) {
+                geocodeUrl += '&cp=' + encodeURIComponent(codePostal);
+            }
+            
+            const response = await fetch(geocodeUrl);
+            const data = await response.json();
+            
+            if (data.lat && data.lon) {
+                const lat = parseFloat(data.lat);
+                const lon = parseFloat(data.lon);
+                
+                // Créer un marqueur personnalisé
+                const customIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background-color: #EAF205; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+                
+                const marker = L.marker([lat, lon], { icon: customIcon }).addTo(map);
+                
+                // Stocker l'ID de l'itinéraire dans le marqueur pour pouvoir le retrouver
+                marker._itineraireId = itineraireId;
+                marker._section = section;
+                
+                // Ajouter un popup avec le titre de l'itinéraire
+                const titre = section.querySelector('.kaki')?.textContent || depart;
+                marker.bindPopup('<strong>' + titre + '</strong><br>' + depart);
+                
+                // Au clic sur le marqueur, scroller vers l'itinéraire correspondant
+                marker.on('click', function() {
+                    const targetSection = this._section;
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Mettre en évidence l'itinéraire temporairement
+                        targetSection.style.transition = 'background-color 0.3s';
+                        targetSection.style.backgroundColor = '#FAFCDA';
+                        setTimeout(() => {
+                            targetSection.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                });
+                
+                markers.push(marker);
+                bounds.push([lat, lon]);
+            }
+        } catch (error) {
+            console.error('Erreur lors du géocodage pour', depart, ':', error);
+        }
+    }
+    
+    // Ajouter un marqueur pour chaque itinéraire
+    const promises = Array.from(itineraires).map(section => addMarkerForItineraire(section));
+    
+    // Ajuster la vue de la carte pour afficher tous les marqueurs une fois chargés
+    Promise.all(promises).then(() => {
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+    });
+    
+    // Ajouter un événement de survol sur les sections pour mettre en évidence le marqueur
+    itineraires.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+            const itineraireId = this.id.replace('itineraire-', '');
+            const marker = markers.find(m => m._itineraireId === itineraireId);
+            if (marker) {
+                marker.openPopup();
+            }
+        });
+    });
+})();
+</script>
 {% endblock %}

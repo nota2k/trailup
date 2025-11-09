@@ -112,5 +112,53 @@ class GeoApiController extends AbstractController
             return new JsonResponse(['error' => 'Erreur lors de la recherche'], 500);
         }
     }
+
+    #[Route('/geocode', name: 'api_geo_geocode', methods: ['GET'])]
+    public function geocode(Request $request): JsonResponse
+    {
+        $query = $request->query->get('q', '');
+        $codePostal = $request->query->get('cp', '');
+        
+        if (empty($query)) {
+            return new JsonResponse(['error' => 'Ville requise'], 400);
+        }
+
+        try {
+            // Utiliser Nominatim (OpenStreetMap) pour le géocodage
+            $searchQuery = $query;
+            if ($codePostal) {
+                $searchQuery .= ', ' . $codePostal;
+            }
+            $searchQuery .= ', France';
+            
+            $response = $this->httpClient->request('GET', 'https://nominatim.openstreetmap.org/search', [
+                'query' => [
+                    'q' => $searchQuery,
+                    'format' => 'json',
+                    'limit' => 1,
+                    'addressdetails' => 1
+                ],
+                'headers' => [
+                    'User-Agent' => 'TrailUp/1.0'
+                ]
+            ]);
+
+            $results = $response->toArray();
+            
+            if (empty($results)) {
+                return new JsonResponse(['error' => 'Aucun résultat trouvé'], 404);
+            }
+            
+            $result = $results[0];
+            
+            return new JsonResponse([
+                'lat' => (float) $result['lat'],
+                'lon' => (float) $result['lon'],
+                'display_name' => $result['display_name']
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Erreur lors du géocodage: ' . $e->getMessage()], 500);
+        }
+    }
 }
 
