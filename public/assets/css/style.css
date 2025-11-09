@@ -305,10 +305,6 @@ select{
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
-
-	@media screen and (max-width: 420px) {
-		flex-direction: column;
-	}
 }
 
 .colonnes-3{
@@ -636,6 +632,7 @@ th{
 	display: flex;
 	flex-direction: column;
 	gap:10px;
+	width: 100%;
 }
 
 .switch{
@@ -954,10 +951,6 @@ button{
   gap: 10px;
 }
 
-.ecrire::before{
-/*	height: 25px;*/
-}
-
 .notification{
 	position: relative;
 }
@@ -1274,3 +1267,445 @@ footer{
 }
 
 /* ---- Main ---- */
+
+/* ============================================
+   RESPONSIVE - Media Queries
+   ============================================ */
+
+/* Tablette (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
+	html {
+		font-size: 16px;
+	}
+	
+	.contained {
+		padding: 0 20px;
+	}
+	
+	.colonne-50w {
+		min-width: 100%;
+		max-width: 100%;
+	}
+	
+	.colonne-60w {
+		min-width: 100%;
+		width: 100%;
+	}
+	
+	.colonne-80w,
+	.colonne-20w {
+		width: 100%;
+	}
+	
+	.grid-2-colonnes {
+		grid-template-columns: 1fr;
+	}
+	
+	.backoffice .grid-2-colonnes {
+		grid-template-areas:
+			"account"
+			"head"
+			"nav"
+			"main";
+	}
+	
+	.home section:not(section:first-child) {
+		padding: 4em 0;
+	}
+	
+	.intro-block h1 {
+		font-size: 180%;
+	}
+	
+	.menu-header {
+		width: 50vw;
+	}
+}
+
+/* Mobile moyen (max-width: 768px) */
+@media screen and (max-width: 768px) {
+	html {
+		font-size: 15px;
+	}
+	
+	h1 {
+		font-size: 1.8rem;
+	}
+	
+	h2 {
+		font-size: 1.5rem;
+	}
+	
+	h3 {
+		font-size: 1.3rem;
+	}
+	
+	.text-24 {
+		font-size: 1.1rem;
+	}
+	
+	.text-22 {
+		font-size: 1rem;
+	}
+	
+	/* Layout Flex */
+	.colonnes-2 {
+		flex-direction: column;
+	}
+	
+	.colonnes-3 {
+		flex-direction: column;
+	}
+	
+	.colonne-20w,
+	.colonne-50w,
+	.colonne-60w,
+	.colonne-80w {
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+	}
+	
+	.inline {
+		flex-wrap: wrap;
+	}
+	
+	.gap-30 {
+		gap: 15px;
+	}
+	
+	.gap-15 {
+		gap: 10px;
+	}
+	
+	/* Header */
+	.header-wrapper {
+		flex-wrap: wrap;
+		padding: 10px 15px;
+	}
+	
+	.menu-header {
+		width: 100%;
+		order: 3;
+		margin-top: 10px;
+	}
+	
+	.site-branding {
+		max-width: 80px;
+	}
+	
+	.log-wrapper {
+		gap: 15px;
+	}
+	
+	/* Search */
+	.search {
+		flex-direction: column;
+		gap: 15px;
+		padding: 1em;
+	}
+	
+	.search > * {
+		width: 100%;
+		border-left: none !important;
+		margin-left: 0 !important;
+		border-top: 1px solid var(--gris-clair);
+		padding-top: 15px;
+	}
+	
+	.search > *:first-child {
+		border-top: none;
+		padding-top: 0.5em;
+	}
+	
+	.search input,
+	.search select {
+		width: 100%;
+	}
+	
+	.search button {
+		min-width: 100% !important;
+		margin-top: 10px;
+	}
+	
+	/* Breakcrumb */
+	.breakcrumb {
+		height: auto;
+		padding: 20px 0;
+		min-height: auto;
+	}
+	
+	/* Homepage */
+	.intro-block {
+		top: 20vh;
+		padding: 0 20px;
+	}
+	
+	.intro-block h1 {
+		font-size: 150%;
+	}
+	
+	.home section:not(section:first-child) {
+		padding: 3em 0;
+	}
+	
+	/* Post wrapper */
+	.post-wrapper {
+		padding: 15px;
+	}
+	
+	.post-wrapper .colonnes-2 {
+		flex-direction: column;
+	}
+	
+	.post-wrapper .colonne-20w {
+		flex-direction: row;
+		align-items: center;
+		gap: 15px;
+		margin-top: 15px;
+	}
+	
+	.info-post.inline {
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+	
+	.icon__info {
+		flex: 1 1 auto;
+		min-width: auto;
+	}
+	
+	/* Buttons */
+	button {
+		padding: 10px 25px;
+		font-size: 0.9rem;
+	}
+	
+	.btn-small {
+		padding: 5px 12px;
+		font-size: 0.85rem;
+	}
+	
+	/* Forms */
+	.block-input {
+		gap: 8px;
+	}
+	
+	.login {
+		padding: 2em 1.5em;
+	}
+	
+	/* Table */
+	td {
+		padding: 10px 15px;
+		font-size: 0.9rem;
+	}
+	
+	th {
+		padding: 15px;
+		font-size: 0.9rem;
+	}
+	
+	/* Footer */
+	.footer-container {
+		padding: 2em 1em 1em 1em;
+	}
+	
+	.list-inline {
+		flex-direction: column;
+		gap: 15px;
+		align-items: center;
+	}
+	
+	/* Backoffice */
+	.sb-row {
+		padding: 15px;
+	}
+	
+	.bo-items {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 5px;
+	}
+	
+	.user-thmb-container {
+		max-width: 60px;
+	}
+	
+	/* Scrolling */
+	.scrolling {
+		max-height: 60vh;
+	}
+}
+
+/* Mobile petit (max-width: 480px) */
+@media screen and (max-width: 480px) {
+	html {
+		font-size: 14px;
+	}
+	
+	h1 {
+		font-size: 1.6rem;
+	}
+	
+	h2 {
+		font-size: 1.4rem;
+	}
+	
+	h3 {
+		font-size: 1.2rem;
+	}
+	
+	.text-24 {
+		font-size: 1rem;
+	}
+	
+	.text-22 {
+		font-size: 0.95rem;
+	}
+	
+	.text-s {
+		font-size: 0.85rem;
+	}
+	
+	/* Spacing */
+	.padding-20 {
+		padding: 15px;
+	}
+	
+	.padding-10 {
+		padding: 8px;
+	}
+	
+	.padding-large {
+		padding: 1em 1.5em;
+	}
+	
+	/* Header */
+	.header-wrapper {
+		padding: 8px 10px;
+	}
+	
+	.site-branding {
+		max-width: 70px;
+	}
+	
+	.log-wrapper {
+		gap: 10px;
+		font-size: 0.9rem;
+	}
+	
+	/* Search */
+	.search-container {
+		padding: 0 15px;
+	}
+	
+	.search {
+		padding: 0.8em;
+		gap: 12px;
+	}
+	
+	/* Homepage */
+	.intro-block {
+		top: 15vh;
+		padding: 0 15px;
+	}
+	
+	.intro-block h1 {
+		font-size: 130%;
+	}
+	
+	.home section:not(section:first-child) {
+		padding: 2em 0;
+	}
+	
+	/* Post wrapper */
+	.post-wrapper {
+		padding: 12px;
+	}
+	
+	.post-wrapper .colonne-20w {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	
+	.info-post.inline {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+	
+	.icon__info {
+		width: 100%;
+	}
+	
+	/* Buttons */
+	button {
+		padding: 8px 20px;
+		font-size: 0.85rem;
+	}
+	
+	.btn-small {
+		padding: 5px 10px;
+		font-size: 0.8rem;
+	}
+	
+	/* Table */
+	td {
+		padding: 8px 10px;
+		font-size: 0.85rem;
+	}
+	
+	th {
+		padding: 12px 10px;
+		font-size: 0.85rem;
+	}
+	
+	/* Footer */
+	.footer-container {
+		padding: 1.5em 1em 1em 1em;
+	}
+	
+	.copyright {
+		font-size: 0.85rem;
+	}
+	
+	/* Backoffice */
+	.sb-row {
+		padding: 12px;
+		font-size: 0.9rem;
+	}
+	
+	.user-thmb-container {
+		max-width: 50px;
+	}
+	
+	/* Scrolling */
+	.scrolling {
+		max-height: 50vh;
+	}
+	
+	.all-annonces {
+		padding: 0.8em;
+		gap: 15px;
+	}
+	
+	/* Map */
+	.map-container {
+		min-height: 300px;
+	}
+	
+	/* Gap adjustments */
+	.gap-30 {
+		gap: 10px;
+	}
+	
+	.gap-15 {
+		gap: 8px;
+	}
+	
+	.gap-5 {
+		gap: 4px;
+	}
+}

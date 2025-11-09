@@ -59,7 +59,7 @@
 			}
 		}
 
-		button{
+		button:not(.btn-small){
 			min-width: 150px;
 		}
 	}
