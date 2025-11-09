@@ -108,4 +108,58 @@ class Discussions
         return $this;
     }
     
+    /**
+     * Récupère le dernier message trié par date et heure
+     */
+    public function getLastMessage(): ?Messages
+    {
+        if ($this->messages->isEmpty()) {
+            return null;
+        }
+        
+        $messages = $this->messages->toArray();
+        usort($messages, function($a, $b) {
+            $dateA = $a->getDate();
+            $dateB = $b->getDate();
+            
+            // Si les dates sont nulles, les mettre à la fin
+            if (!$dateA && !$dateB) return 0;
+            if (!$dateA) return 1;
+            if (!$dateB) return -1;
+            
+            // Comparer les dates
+            $dateCompare = $dateA->getTimestamp() <=> $dateB->getTimestamp();
+            if ($dateCompare !== 0) {
+                return $dateCompare;
+            }
+            
+            // Si les dates sont égales, comparer les heures
+            $heureA = $a->getHeure();
+            $heureB = $b->getHeure();
+            
+            if (!$heureA && !$heureB) return 0;
+            if (!$heureA) return 1;
+            if (!$heureB) return -1;
+            
+            return $heureA->getTimestamp() <=> $heureB->getTimestamp();
+        });
+        
+        return end($messages);
+    }
+    
+    /**
+     * Compte les messages non lus dans cette discussion pour un utilisateur donné
+     * Un message est non lu s'il n'a pas été envoyé par l'utilisateur et que lu = false
+     */
+    public function countUnreadMessagesForUser(Utilisateur $user): int
+    {
+        $count = 0;
+        foreach ($this->messages as $message) {
+            if ($message->getExpediteur() !== $user && !$message->isLu()) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+    
 }

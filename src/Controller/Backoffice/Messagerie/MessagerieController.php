@@ -151,15 +151,36 @@ class MessagerieController extends AbstractController
             return $dateA <=> $dateB;
         });
         
+        // Marquer tous les messages non lus comme lus pour cet utilisateur
+        // (uniquement les messages qui ne sont pas envoyés par l'utilisateur)
+        $hasUnreadMessages = false;
+        foreach ($messages as $message) {
+            // Si le message n'a pas été envoyé par l'utilisateur actuel et qu'il n'est pas encore lu
+            if ($message->getExpediteur() !== $utilisateur && !$message->isLu()) {
+                $message->setLu(true);
+                $hasUnreadMessages = true;
+            }
+        }
+        
+        // Sauvegarder les changements si des messages ont été marqués comme lus
+        if ($hasUnreadMessages) {
+            $entityManager->flush();
+        }
+        
         // Créer un nouveau message
         $message = new Messages();
         $message->setExpediteur($utilisateur);
         $message->setDiscussion($discussion);
+        // S'assurer que les dates sont définies
+        $message->setDate(new DateTime('now'));
+        $message->setHeure(new DateTime('now'));
         
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+            // S'assurer que le message est ajouté à la discussion
+            $discussion->addMessage($message);
             $entityManager->persist($message);
             $entityManager->flush();
             

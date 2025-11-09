@@ -14,8 +14,22 @@
         </nav>
         <nav class="log-wrapper">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a class="vertical" href="{{ path('app_backoffice') }}"><img src="{{ asset('assets/img/icons/icon-account.svg')}}"></a>
-            <a href="{{ path('app_logout') }}">Deconnexion</a>
+            <a class="vertical account-icon-wrapper" href="{{ path('app_backoffice') }}">
+                <img src="{{ asset('assets/img/icons/icon-account.svg')}}" alt="Mon compte">
+                {% set unread_count = count_unread_messages() %}
+                {# Debug temporaire - à retirer après test #}
+                {# <span style="color: red; font-size: 10px;">Debug: {{ unread_count }}</span> #}
+                {% if unread_count > 0 %}
+                    <span class="notification-badge">{{ unread_count > 99 ? '99+' : unread_count }}</span>
+                {% endif %}
+            </a>
+            <a href="{{ path('app_logout') }}" class="logout-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out">
+                    <path d="m16 17 5-5-5-5"/>
+                    <path d="M21 12H9"/>
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                </svg>
+            </a>
         {% else %}
             <a href="{{ path('app_register') }}" class="register">S'inscrire</a>
         <a href="{{ path('app_login') }}" class="connect">

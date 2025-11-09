@@ -493,7 +493,11 @@ td{
 
 .msg_new{
 	font-weight: 600;
+}
 
+.msg_new.read,
+.msg_new.read td{
+	font-weight: 500;
 }
 
 .td__nom:hover{
@@ -1120,6 +1124,51 @@ header{
 	align-items: center;
 	color:var(--jaune);
 	gap:20px;
+}
+
+.logout-link{
+	display: inline-flex;
+	align-items: center;
+	color: var(--jaune);
+	transition: opacity 0.2s ease-in-out;
+}
+
+.logout-link:hover{
+	opacity: 0.8;
+}
+
+.account-icon-wrapper{
+	position: relative;
+	display: inline-block;
+	line-height: 0;
+}
+
+.account-icon-wrapper img{
+	display: block;
+	width: auto;
+	height: auto;
+}
+
+.notification-badge{
+	position: absolute;
+    top: -8px;
+    right: -3px;
+    background-color: #ff4444;
+    color: white !important;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    width: 20px;
+    aspect-ratio: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    border: 2px solid white;
+    line-height: 1;
 }
 
 /*Animation header scroll*/

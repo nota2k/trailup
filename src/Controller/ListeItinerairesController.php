@@ -12,6 +12,7 @@ use App\Entity\Utilisateur;
 use App\Form\ItinerairesType;
 use App\Entity\Messagerie\Discussions;
 use App\Repository\Messagerie\DiscussionsRepository;
+use App\Repository\UtilisateurRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +25,6 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Form\SearchType;
-use App\Repository\UtilisateurRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -180,5 +180,32 @@ class ListeItinerairesController extends AbstractController
         $entityManager->flush();
         
         return $this->redirectToRoute('app_conversation_show', ['id' => $discussion->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/profil/{id}', name: 'app_profil_public', methods: ['GET'])]
+    public function showProfil(int $id, UtilisateurRepository $utilisateurRepository, InfoUserRepository $infoUserRepository): Response
+    {
+        $user = $utilisateurRepository->find($id);
+        
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+        
+        // Chercher InfoUser par l'utilisateur
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new \App\Entity\InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
+        
+        return $this->render('liste_itineraires/profil.html.twig', [
+            'user' => $infoUser,
+            'utilisateur' => $user,
+        ]);
     }
 }
