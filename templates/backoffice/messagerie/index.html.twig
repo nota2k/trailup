@@ -18,8 +18,9 @@
             {% if discussions|length > 0 %}
                 {% for discussion in discussions %}
                     {% set destinataire = (discussion.user1.id == app.user.id) ? discussion.user2 : discussion.user1 %}
-                    {% set dernierMessage = discussion.messages|last %}
-                    <tr class="msg_new">
+                    {% set dernierMessage = discussion.lastMessage %}
+                    {% set unreadCount = discussion.countUnreadMessagesForUser(app.user) %}
+                    <tr class="msg_new{% if unreadCount == 0 %} read{% endif %}">
                         <td class="td__nom">{{ discussion.sujet }}</td>
                         <td class="destinataire">{{ destinataire.username }}</td>
                         <td class="destinataire">
@@ -30,10 +31,14 @@
                             {% endif %}
                         </td>
                         <td class="date">
-                            {% if dernierMessage and dernierMessage.date %}
-                                {{ dernierMessage.date|date('d/m/Y') }}
-                                {% if dernierMessage.heure %}
-                                    à {{ dernierMessage.heure|date('H:i') }}
+                            {% if dernierMessage %}
+                                {% if dernierMessage.date %}
+                                    {{ dernierMessage.date|date('d/m/Y') }}
+                                    {% if dernierMessage.heure %}
+                                        à {{ dernierMessage.heure|date('H:i') }}
+                                    {% endif %}
+                                {% else %}
+                                    -
                                 {% endif %}
                             {% else %}
                                 -
