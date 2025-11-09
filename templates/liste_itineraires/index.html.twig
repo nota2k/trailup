@@ -85,7 +85,7 @@
                         </a>
                         <p class="localisation">
                         </p>
-                        <a href="" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
+                        <a href="{% if app.user %}{{ path('app_contact_createur', {'id': annonce.itineraire.id}) }}{% else %}{{ path('app_login') }}{% endif %}" class="contact"><img src="assets/img/icons/icon-contact.svg"></a>
                         {% set entry = "" %}
                         {% for itin in user_itineraire %}
                             {% if itin.id == annonce.itineraire.id %}

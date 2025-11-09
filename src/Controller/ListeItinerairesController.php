@@ -10,6 +10,8 @@ use App\Repository\ItinerairesRepository;
 
 use App\Entity\Utilisateur;
 use App\Form\ItinerairesType;
+use App\Entity\Messagerie\Discussions;
+use App\Repository\Messagerie\DiscussionsRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -137,5 +139,46 @@ class ListeItinerairesController extends AbstractController
         }
 
         return $this->redirectToRoute('app_liste_annonces', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/contact/{id}', name: 'app_contact_createur', methods: ['GET'])]
+    public function contactCreateur(Itineraires $itineraire, EntityManagerInterface $entityManager, DiscussionsRepository $discussionsRepository): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        /** @var \App\Entity\Utilisateur $utilisateur */
+        $utilisateur = $this->getUser();
+        $createur = $itineraire->getCreateur();
+        
+        if (!$createur) {
+            $this->addFlash('error', 'Le créateur de cet itinéraire n\'existe pas.');
+            return $this->redirectToRoute('app_liste_annonces', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        // Vérifier si une discussion existe déjà entre ces deux utilisateurs avec ce sujet
+        $discussionExistante = $discussionsRepository->createQueryBuilder('d')
+            ->where('(d.user1 = :user1 AND d.user2 = :user2) OR (d.user1 = :user2 AND d.user2 = :user1)')
+            ->andWhere('d.sujet = :sujet')
+            ->setParameter('user1', $utilisateur)
+            ->setParameter('user2', $createur)
+            ->setParameter('sujet', $itineraire->getTitre())
+            ->getQuery()
+            ->getOneOrNullResult();
+        
+        if ($discussionExistante) {
+            // Si la discussion existe déjà, rediriger vers celle-ci
+            return $this->redirectToRoute('app_conversation_show', ['id' => $discussionExistante->getId()], Response::HTTP_SEE_OTHER);
+        }
+        
+        // Créer une nouvelle discussion
+        $discussion = new Discussions();
+        $discussion->setUser1($utilisateur);
+        $discussion->setUser2($createur);
+        $discussion->setSujet($itineraire->getTitre());
+        
+        $entityManager->persist($discussion);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('app_conversation_show', ['id' => $discussion->getId()], Response::HTTP_SEE_OTHER);
     }
 }
