@@ -305,6 +305,10 @@ select{
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
+
+	@media screen and (max-width: 420px) {
+		flex-direction: column;
+	}
 }
 
 .colonnes-3{
@@ -735,6 +739,11 @@ textarea{
 .annonces .colonnes-2{
 	justify-content: center;
 	align-items: stretch;
+
+	> div{
+		min-width:100px;
+	}
+
 }
 
 .all-annonces-container{

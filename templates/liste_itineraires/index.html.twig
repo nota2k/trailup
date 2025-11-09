@@ -21,6 +21,74 @@
 .itineraire-card:hover {
     background-color: rgba(250, 252, 218, 0.3);
 }
+.sort-filter {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.sort-icon {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+.sort-icon.sort-asc {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+.sort-icon.sort-desc {
+    transform: rotate(0deg);
+    opacity: 1;
+}
+.sort-icon.sort-none {
+    opacity: 0.3;
+}
+.range-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+
+    span{
+        font-size: 16px;
+    }
+}
+.range-label {
+    font-size: 16px;
+    color: var(--gris-moyen);
+    white-space: nowrap;
+}
+.range-value {
+    font-size: 16px;
+    color: var(--vert);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 50px;
+    text-align: left;
+}
+
+.duree-inputs{
+    input{
+        width: 50px;
+        text-align: center;
+    }
+}
+#distance-max {
+    flex: 1;
+}
+.duree-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.duree-unit {
+    font-size: 14px;
+    color: var(--gris-moyen);
+}
 </style>
 {% endblock %}
 {% block body %}
@@ -36,12 +104,21 @@
                 <option value="Intermediaire" {% if param.niveau == 'Intermediaire' or param.niveau == 'intermediaire' %}selected{% endif %}>Intermediaire</option>
                 <option value="Difficile" {% if param.niveau == 'Difficile' or param.niveau == 'difficile' %}selected{% endif %}>Difficile</option>
             </select>
-            <input type="range" id="distance-max" name="distance" min="0" max="200" value="{{ param.distance ? param.distance : 0 }}" />
-            <input placeholder="0" type="number" id="duree-min" name="dureemin" value="{{ param.duree_min ? param.duree_min : '' }}" />
-            <input placeholder="200" type="number" id="duree-max" name="dureemax" value="{{ param.duree_max ? param.duree_max : '' }}" />
+            <div class="range-wrapper">
+                <span class="range-label">0 km</span>
+                <input type="range" id="distance-max" name="distance" min="0" max="200" value="{{ param.distance ? param.distance : 0 }}" />
+                <span class="range-value" id="distance-value">{{ param.distance ? param.distance : 0 }} km</span>
+            </div>
+            <div class="duree-inputs">
+                <input placeholder="0" type="number" id="duree-min" name="dureemin" value="{{ param.duree_min ? param.duree_min : '' }}" />
+                <span class="duree-unit">h</span>
+            </div>
+            <div class="duree-inputs">
+                <input placeholder="200" type="number" id="duree-max" name="dureemax" value="{{ param.duree_max ? param.duree_max : '' }}" />
+                <span class="duree-unit">h</span>
+            </div>
             <input type="text" name="keyword" placeholder="Mot-clef" value="{{ param.keyword ? param.keyword : '' }}">
             <button name="search" class="btn-kaki" type="submit" value="1">Rechercher</button>
-            <a href="{{ path('app_liste_annonces') }}" class="btn-green">Réinitialiser</a>
         </form>
     </div>
 </div>
@@ -53,16 +130,26 @@
         <div class="all-annonces scrolling">
             <div class="sort inline gap-30">
                 <div>
-                    <p class="sort-filter" onclick="getValueSort()">Distance <i class="sort-distance" sort="no">&#9660;</i></p>
+                    <p class="sort-filter sort-by-distance" data-sort-type="distance" data-sort-order="none">
+                        Distance 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sort-icon sort-distance lucide lucide-chevron-down">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </p>
                 </div>
                 <div>
-                    <p class="sort-filter">Durée <i class="sort-distance" sort="no">&#9660;</i></p>
+                    <p class="sort-filter sort-by-duree" data-sort-type="duree" data-sort-order="none">
+                        Durée 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sort-icon sort-duree lucide lucide-chevron-down">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </p>
                 </div>
             </div>
             {% for annonce in itineraires %}
 
             {% if annonce %}
-            <section class="post-wrapper border-thin itineraire-card" id="itineraire-{{ annonce.itineraire.id }}" data-depart="{{ annonce.itineraire.depart }}" data-code-postal="{{ annonce.itineraire.codePostal }}" data-itineraire-id="{{ annonce.itineraire.id }}">
+            <section class="post-wrapper border-thin itineraire-card" id="itineraire-{{ annonce.itineraire.id }}" data-depart="{{ annonce.itineraire.depart }}" data-code-postal="{{ annonce.itineraire.codePostal }}" data-itineraire-id="{{ annonce.itineraire.id }}" data-distance="{{ annonce.itineraire.distance }}" data-duree="{{ annonce.itineraire.duree }}">
                 <div class="colonnes-2">
                     <div class="colonne-80w">
                         <div id="depart" class="icon__info align-center">
@@ -285,6 +372,105 @@
             }
         });
     });
+    
+    // Fonctionnalité de tri
+    const sortContainer = document.querySelector('.all-annonces.scrolling');
+    const sortFilters = document.querySelectorAll('.sort-filter');
+    let currentSortType = null;
+    let currentSortOrder = 'none'; // 'none', 'asc', 'desc'
+    
+    // Initialiser les icônes avec la classe sort-none
+    sortFilters.forEach(filter => {
+        const icon = filter.querySelector('.sort-icon');
+        if (icon) {
+            icon.classList.add('sort-none');
+        }
+    });
+    
+    function sortItineraires(type, order) {
+        const sections = Array.from(document.querySelectorAll('.itineraire-card'));
+        const parent = sections[0]?.parentNode;
+        
+        if (!parent) return;
+        
+        sections.sort((a, b) => {
+            const valueA = parseFloat(a.dataset[type]) || 0;
+            const valueB = parseFloat(b.dataset[type]) || 0;
+            
+            if (order === 'asc') {
+                return valueA - valueB;
+            } else {
+                return valueB - valueA;
+            }
+        });
+        
+        // Réorganiser les éléments dans le DOM
+        sections.forEach(section => {
+            parent.appendChild(section);
+        });
+    }
+    
+    function updateSortIcons(activeType, order) {
+        sortFilters.forEach(filter => {
+            const icon = filter.querySelector('.sort-icon');
+            const sortType = filter.dataset.sortType;
+            
+            if (sortType === activeType) {
+                filter.dataset.sortOrder = order;
+                icon.classList.remove('sort-none', 'sort-asc', 'sort-desc');
+                if (order === 'none') {
+                    icon.classList.add('sort-none');
+                } else if (order === 'asc') {
+                    icon.classList.add('sort-asc');
+                } else {
+                    icon.classList.add('sort-desc');
+                }
+            } else {
+                filter.dataset.sortOrder = 'none';
+                icon.classList.remove('sort-asc', 'sort-desc');
+                icon.classList.add('sort-none');
+            }
+        });
+    }
+    
+    sortFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            const sortType = this.dataset.sortType;
+            const currentOrder = this.dataset.sortOrder;
+            
+            let newOrder;
+            if (currentOrder === 'none' || currentOrder === 'desc') {
+                newOrder = 'asc';
+            } else {
+                newOrder = 'desc';
+            }
+            
+            // Si on clique sur un autre type de tri, réinitialiser l'ordre
+            if (currentSortType !== sortType) {
+                newOrder = 'asc';
+            }
+            
+            currentSortType = sortType;
+            currentSortOrder = newOrder;
+            
+            sortItineraires(sortType, newOrder);
+            updateSortIcons(sortType, newOrder);
+        });
+    });
+    
+    // Mise à jour dynamique de la valeur du range de distance
+    const distanceRange = document.getElementById('distance-max');
+    const distanceValue = document.getElementById('distance-value');
+    
+    if (distanceRange && distanceValue) {
+        // Mettre à jour la valeur au chargement
+        distanceValue.textContent = distanceRange.value + ' km';
+        
+        // Mettre à jour la valeur lors du changement
+        distanceRange.addEventListener('input', function() {
+            distanceValue.textContent = this.value + ' km';
+        });
+    }
 })();
 </script>
 {% endblock %}
