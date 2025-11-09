@@ -14,6 +14,13 @@
     height: 100%;
     min-height: 600px;
 }
+.itineraire-card {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.itineraire-card:hover {
+    background-color: rgba(250, 252, 218, 0.3);
+}
 </style>
 {% endblock %}
 {% block body %}
@@ -55,7 +62,7 @@
             {% for annonce in itineraires %}
 
             {% if annonce %}
-            <section class="post-wrapper border-thin" id="itineraire-{{ annonce.itineraire.id }}" data-depart="{{ annonce.itineraire.depart }}" data-code-postal="{{ annonce.itineraire.codePostal }}">
+            <section class="post-wrapper border-thin itineraire-card" id="itineraire-{{ annonce.itineraire.id }}" data-depart="{{ annonce.itineraire.depart }}" data-code-postal="{{ annonce.itineraire.codePostal }}" data-itineraire-id="{{ annonce.itineraire.id }}">
                 <div class="colonnes-2">
                     <div class="colonne-80w">
                         <div id="depart" class="icon__info align-center">
@@ -249,6 +256,32 @@
             const marker = markers.find(m => m._itineraireId === itineraireId);
             if (marker) {
                 marker.openPopup();
+            }
+        });
+        
+        // Ajouter un événement de clic sur la section pour centrer la carte sur le marqueur
+        section.addEventListener('click', function(e) {
+            // Ne pas déclencher si on clique sur un lien, un bouton ou un formulaire
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button') || e.target.closest('form')) {
+                return;
+            }
+            
+            const itineraireId = this.id.replace('itineraire-', '');
+            const marker = markers.find(m => m._itineraireId === itineraireId);
+            if (marker) {
+                // Centrer la carte sur le marqueur avec un zoom approprié
+                map.setView(marker.getLatLng(), 13, {
+                    animate: true,
+                    duration: 0.5
+                });
+                // Ouvrir le popup du marqueur
+                marker.openPopup();
+                // Mettre en évidence la section temporairement
+                this.style.transition = 'background-color 0.3s';
+                this.style.backgroundColor = '#FAFCDA';
+                setTimeout(() => {
+                    this.style.backgroundColor = '';
+                }, 2000);
             }
         });
     });

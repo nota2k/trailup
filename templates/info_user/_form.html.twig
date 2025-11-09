@@ -29,13 +29,22 @@
             {{ form_label(form.region, 'Region', {'label_attr': {'class': 'semibold'}}) }}
             {{ form_widget(form.region) }}
 
+            <!-- Email -->
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+
             <!-- Miniature -->
             {{ form_label(form.miniatureFile, 'Photo de profil', {'label_attr': {'class': 'semibold'}}) }}
             {{ form_widget(form.miniatureFile, {'attr': {'accept': 'image/*'}}) }}
             {{ form_errors(form.miniatureFile) }}
         </div>
         <div class="apercu-thmb colonne-50w flex-3">
-            <img src="{{ asset( user.miniature )}}">
+            {% if user.miniature %}
+                <img src="{{ asset(user.miniature) }}">
+            {% else %}
+                <img src="{{ asset('/assets/img/thmb-user.png') }}">
+            {% endif %}
         </div>
 
         <button class="btn-green btn-small w150px">{{ button_label|default('Modifier') }}</button>

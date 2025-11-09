@@ -121,8 +121,12 @@ class BackofficeController extends AbstractController
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
         
-        // Chercher InfoUser par l'utilisateur, pas par son propre ID
-        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        // Chercher InfoUser par l'utilisateur avec une requête optimisée
+        $infoUser = $infoUserRepository->createQueryBuilder('iu')
+            ->where('iu.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
         
         // Si InfoUser n'existe pas, le créer
         if (!$infoUser) {
@@ -134,12 +138,32 @@ class BackofficeController extends AbstractController
             }
             $entityManager->persist($infoUser);
             $entityManager->flush();
+        } else {
+            // S'assurer que toutes les propriétés sont chargées
+            // Forcer le chargement en accédant aux propriétés
+            $infoUser->getNom();
+            $infoUser->getPrenom();
+            $infoUser->getVille();
+            $infoUser->getRegion();
+            $infoUser->getMiniature();
         }
 
         $form = $this->createForm(InfoUserType::class, $infoUser);
+        
+        // Préremplir le champ email avec la valeur de l'utilisateur
+        if ($infoUser->getUser() && $infoUser->getUser()->getEmail()) {
+            $form->get('email')->setData($infoUser->getUser()->getEmail());
+        }
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Sauvegarder l'email dans l'entité Utilisateur
+            $email = $form->get('email')->getData();
+            if ($email !== null && $infoUser->getUser()) {
+                $infoUser->getUser()->setEmail($email);
+            }
+            
             /** @var UploadedFile $miniatureFile */
             $miniatureFile = $form->get('miniatureFile')->getData();
             

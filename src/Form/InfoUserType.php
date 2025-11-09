@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\DataTransformer\UserDataTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\CallbackTransformer;
@@ -36,6 +37,11 @@ class InfoUserType extends AbstractType
                 'label' => false])
             ->add('region', null, [
                 'label' => false])
+            ->add('email', EmailType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('miniatureFile', FileType::class, [
                 'label' => false,
                 'mapped' => false,

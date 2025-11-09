@@ -1,36 +1,50 @@
 {% extends 'backoffice/bo-parts/content.html.twig' %}
 {% block breakcrumb %}
-    {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
+	{% include("backoffice/bo-parts/breakcrumb.html.twig") %}
 {% endblock %}
-    {% block content %}
-    <div class="profil-block">
-        
-        <div class="user-thmb-container w-30">
-            {% if user and user.miniature %}
-                <img src="{{ asset(user.miniature) }}">
-            {% else %}
-                <img src="{{ asset('/assets/img/thmb-user.png') }}">
-            {% endif %}
-        </div>
-        <div class="block">
-            <p class="semibold">Nom</p>
-            <p>{{ user.nom }}</p>
-            <p class="semibold">Pseudonyme</p>
-            <p>{{ app.user.username }}</p>
-        </div>
-        <div class="block">
-        <p class="semibold">Prenom</p>
-        <p>{{ user.prenom }}</p>
-        <p class="semibold">Ville</p>
-        <p>{{ user.ville }}</p>
-        <p class="semibold">Region</p>
-        <p>{{ user.region }}</p>
-        {# <p class="semibold">Chevaux</p> #}
-        {# <p>{{ chevaux.nom }}</p> #}
-        </div>
+{% block content %}
+	<div class="profil-block">
 
-        <button class="btn-green"><a href="{{ path('app_profil_edit',{'id': app.user.id} ) }}">Modifier</a></button>
-    </div>
-                
-    {# <a href="{{ path('app_profil_new') }}">Create new</a> #}
-    {% endblock %}
+		<div class="user-thmb-container w-30">
+			{% if user and user.miniature %}
+				<img src="{{ asset(user.miniature) }}">
+			{% else %}
+				<img src="{{ asset('/assets/img/thmb-user.png') }}">
+			{% endif %}
+		</div>
+		<div class="block">
+			<div class="block-item">
+				<p class="semibold">Nom</p>
+				<p>{{ user.nom }}</p>
+			</div>
+			<div class="block-item">
+				<p class="semibold">Pseudonyme</p>
+				<p>{{ app.user.username }}</p>
+			</div>
+			<div class="block-item">
+				<p class="semibold">Email</p>
+				<p>{{ app.user.email|default('Non renseigné') }}</p>
+			</div>
+		</div>
+		<div class="block">
+			<div class="block-item">
+			<p class="semibold">Prenom</p>
+			<p>{{ user.prenom }}</p>
+			<p class="semibold">Ville</p>
+				<p>{{ user.ville }}</p>
+			</div>
+			<div class="block-item">
+				<p class="semibold">Region</p>
+				<p>{{ user.region }}</p>
+			</div>
+			{# <p class="semibold">Chevaux</p> #}
+			{# <p>{{ chevaux.nom }}</p> #}
+		</div>
+
+		<button class="btn-green">
+			<a href="{{ path('app_profil_edit',{'id': app.user.id} ) }}">Modifier</a>
+		</button>
+	</div>
+
+	{# <a href="{{ path('app_profil_new') }}">Create new</a> #}
+{% endblock %}

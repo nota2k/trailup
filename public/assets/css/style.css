@@ -1083,19 +1083,6 @@ img, svg{
 	height: auto;
 }
 
-.apercu-thmb{
-	aspect-ratio: 1/1;
-	border-radius: 100%;
-	overflow: hidden;
-	max-height: 300px;
-  max-width: 300px;
-}
-
-.apercu-thmb img{
-	height: 100%;
-	object-fit: cover;
-}
-
 /* ---- Header ---- */
 header{
 	position: fixed;

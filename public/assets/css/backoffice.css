@@ -1,0 +1,83 @@
+@import 'style.css';
+
+.profil-block{
+	.user-thmb-container{
+		max-width: 300px;
+		max-height: 300px;
+		border: 1px solid rgba(133, 133, 133, 0.155);
+		border-radius: 50%;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+	.block{
+		display: flex;
+		margin-bottom: 20px;
+		/* flex-direction: column; */
+		gap: 10px;
+
+		
+	}	
+
+	.block-item{
+		display: flex;
+		flex-direction: column;
+		min-width: 200px;
+		/* gap: 10px; */
+
+		p.semibold{
+			font-size: 18px;
+			font-weight: 600;
+			color: var(--vert-gris);
+		}
+
+		p:not(.semibold){
+			border: 1px solid rgba(133, 133, 133, 0.155);
+			border-radius: 35px;
+			padding: 5px 20px;
+		}
+	}
+}
+
+.backoffice{
+	form{
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+
+		input{
+			border: 1px solid rgba(133, 133, 133, 0.155);
+			border-radius: 35px;
+			padding: 5px 20px;
+
+		}
+
+		> .colonne-50w{
+			padding: 0 20px;
+
+			&:first-child{
+				border-right: 1px solid rgba(133, 133, 133, 0.155);
+			}
+		}
+
+		button{
+			min-width: 150px;
+		}
+	}
+
+	.apercu-thmb{
+		max-width: 200px;
+		padding: 0!important;
+		min-width: 150px;
+		width: 100%;
+		height: 100%;
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
+		overflow: hidden;
+
+		img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}
