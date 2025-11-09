@@ -6,16 +6,16 @@
         <div class="intro-block">
             <h1>Trouvez vos compagnons de balades !</h1>
             <div class="search-container">
-                <form class="search">
-                    <input type="text" name="" placeholder="Où?">
-                    <select name="pets" id="pet-select">
+                <form class="search" method="get" action="{{ path('app_liste_annonces') }}">
+                    <input type="text" name="depart" placeholder="Où?" value="">
+                    <select name="niveau" id="niveau-select">
                         <option value="">Difficulté</option>
-                        <option value="facile">Facile</option>
-                        <option value="moyen">Moyen</option>
-                        <option value="difficile">Difficile</option>
+                        <option value="Facile">Facile</option>
+                        <option value="Intermediaire">Intermédiaire</option>
+                        <option value="Difficile">Difficile</option>
                     </select>
-                    <input type="text" name="keyword" placeholder="Mot-clef">
-                    <button class="btn-kaki" type="submit">Rechercher</button>
+                    <input type="text" name="keyword" placeholder="Mot-clef" value="">
+                    <button name="search" class="btn-kaki" type="submit" value="1">Rechercher</button>
                 </form>
             </div>
         </div>
