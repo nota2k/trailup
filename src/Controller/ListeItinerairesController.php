@@ -76,7 +76,28 @@ class ListeItinerairesController extends AbstractController
             $infoUser = null;
             
             if ($createur) {
-                $infoUser = $infoUserRepository->findOneBy(['user' => $createur]);
+                // Recharger le créateur depuis la base pour s'assurer qu'il est complètement chargé
+                $createurId = $createur->getId();
+                $createur = $entityManager->getRepository(Utilisateur::class)->find($createurId);
+                
+                if ($createur) {
+                    // Forcer le chargement en accédant aux propriétés
+                    $createur->getUsername();
+                    
+                    // Charger InfoUser avec la relation user en eager loading
+                    $infoUser = $infoUserRepository->createQueryBuilder('iu')
+                        ->leftJoin('iu.user', 'u')
+                        ->addSelect('u')
+                        ->where('iu.user = :createur')
+                        ->setParameter('createur', $createur)
+                        ->getQuery()
+                        ->getOneOrNullResult();
+                    
+                    // Si InfoUser existe, forcer le chargement de la relation user
+                    if ($infoUser && $infoUser->getUser()) {
+                        $infoUser->getUser()->getUsername();
+                    }
+                }
             }
             
             $details[] = [

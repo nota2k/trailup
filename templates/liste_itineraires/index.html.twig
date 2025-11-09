@@ -91,23 +91,25 @@
                         <p class="resume">{{ annonce.itineraire.description }}</p>
                     </div>
                     <div class="colonne-20w vertical gap-5">
-                        {% if annonce.createur and annonce.createur.user %}
-                            <a href="{{ path('app_profil_public', {'id': annonce.createur.user.id}) }}" class="thmb-user">
+                        {% if annonce.createur and annonce.createur.user is not null and annonce.createur.user.username is not null %}
+                            {% set createurUser = annonce.createur.user %}
+                            <a href="{{ path('app_profil_public', {'id': createurUser.id}) }}" class="thmb-user">
                                 {% if annonce.createur.miniature %}
                                     <img src="{{ asset(annonce.createur.miniature) }}">
                                 {% else %}
                                     <img src="{{ asset('assets/img/thmb-user.png')}}">
                                 {% endif %}
                             </a>
-                            <a href="{{ path('app_profil_public', {'id': annonce.createur.user.id}) }}" class="semibold username">
-                                {{ annonce.createur.user.username }}
+                            <a href="{{ path('app_profil_public', {'id': createurUser.id}) }}" class="semibold username">
+                                {{ createurUser.username }}
                             </a>
                         {% else %}
                             <div class="thmb-user">
                                 <img src="{{ asset('assets/img/thmb-user.png')}}">
                             </div>
-                            <a href="" class="semibold username">
-                            </a>
+                            <span class="semibold username">
+                                Utilisateur inconnu
+                            </span>
                         {% endif %}
                         <p class="localisation">
                         </p>

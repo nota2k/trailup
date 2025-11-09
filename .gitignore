@@ -13,3 +13,4 @@
 .user.ini
 
 .DS_Store
+.env
