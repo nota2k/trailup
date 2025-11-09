@@ -7,18 +7,58 @@
     {{ form_start(registrationForm, {'attr': {'class': 'login jaune-pastel-bg vertical gap-15 w-30 justify-center'}}) }}
 
         <h1 class="h3 mb-3 font-weight-normal text-center">Inscription</h1>
+        
+        {# Affichage des messages flash d'erreur #}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        
+        {# Affichage des erreurs du formulaire #}
+        {% if not registrationForm.vars.valid %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for error in registrationForm.vars.errors %}
+                        <li>{{ error.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
         <!----- Identifiant ---->
-
         <label class="semibold" for="inputUsername">Identifiant</label>
         <input type="text" value="{{ field_value(registrationForm.username) }}" name="{{ field_name(registrationForm.username) }}" id="registration_form_username" class="form-control" required autofocus>
+        {% if registrationForm.username.vars.errors|length > 0 %}
+            <div class="text-danger">
+                {% for error in registrationForm.username.vars.errors %}
+                    <small>{{ error.message }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
         
         <!----- MDP ---->
         <label class="semibold" for="registration_form_plainPassword_first">Mot de passe</label>
         <input type="password" name="{{ field_name(registrationForm.plainPassword.first) }}" id="registration_form_plainPassword_first" class="form-control" required>
+        {% if registrationForm.plainPassword.first.vars.errors|length > 0 %}
+            <div class="text-danger">
+                {% for error in registrationForm.plainPassword.first.vars.errors %}
+                    <small>{{ error.message }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <!-----Confirmation MDP ---->
         <label class="semibold" for="registration_form_plainPassword_second">Confirmation du mot de passe</label>
         <input type="password" name="{{ field_name(registrationForm.plainPassword.second) }}" id="registration_form_plainPassword_second" class="form-control" required>
+        {% if registrationForm.plainPassword.second.vars.errors|length > 0 %}
+            <div class="text-danger">
+                {% for error in registrationForm.plainPassword.second.vars.errors %}
+                    <small>{{ error.message }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {# Token CSRF #}
+        <input type="hidden" name="{{ field_name(registrationForm._token) }}" value="{{ field_value(registrationForm._token) }}">
 
         <button class="btn-kaki w-30 self-center" type="submit">
             Inscription

@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,7 +33,18 @@ class BackofficeController extends AbstractController
 
         $utilisateur = $this->getUser();
         $id = $utilisateur->getId();
-        $infoUser = $infoUserRepository->find($id); 
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $utilisateur]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($utilisateur);
+            // Définir une miniature par défaut si elle n'existe pas
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
         
         return $this->render('backoffice/backoffice.html.twig',[
             'user' => $infoUser,
@@ -49,7 +60,20 @@ class BackofficeController extends AbstractController
         // Récupère les infos liées à l'ID d'Utilisateur
         $utilisateur = $this->getUser();
         $user = $utilisateurRepository->find($id);
-        $infoUser = $infoUserRepository->find($id);
+        
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet vide pour éviter les erreurs
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+        }
+        
         // dd($infoUser);
         if($utilisateur){
             $details = $entityManager->getRepository(Utilisateur::class)->findSingleUser(114);  
@@ -86,11 +110,29 @@ class BackofficeController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_profil_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, InfoUser $infoUser, InfoUserRepository $infoUserRepository, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Request $request, InfoUserRepository $infoUserRepository, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager, int $id): Response
     {
-        $infoUser = $infoUserRepository->find($id);
+        $user = $utilisateurRepository->find($id);
+        
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, le créer
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            // Définir une miniature par défaut si elle n'existe pas
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+            $entityManager->persist($infoUser);
+            $entityManager->flush();
+        }
 
-        // dd($infoUser);
         $form = $this->createForm(InfoUserType::class, $infoUser);
         $form->handleRequest($request);
 

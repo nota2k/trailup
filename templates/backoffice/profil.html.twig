@@ -6,13 +6,17 @@
     <div class="profil-block">
         
         <div class="user-thmb-container w-30">
-            <img src="{{ asset( user.miniature )}}">
+            {% if user and user.miniature %}
+                <img src="{{ asset(user.miniature) }}">
+            {% else %}
+                <img src="{{ asset('/assets/img/thmb-user.png') }}">
+            {% endif %}
         </div>
         <div class="block">
             <p class="semibold">Nom</p>
             <p>{{ user.nom }}</p>
             <p class="semibold">Pseudonyme</p>
-            <p>{{ user.user.username }}</p>
+            <p>{{ app.user.username }}</p>
         </div>
         <div class="block">
         <p class="semibold">Prenom</p>
@@ -25,7 +29,7 @@
         {# <p>{{ chevaux.nom }}</p> #}
         </div>
 
-        <button class="btn-green"><a href="{{ path('app_profil_edit',{'id': user.id} ) }}">Modifier</a></button>
+        <button class="btn-green"><a href="{{ path('app_profil_edit',{'id': app.user.id} ) }}">Modifier</a></button>
     </div>
                 
     {# <a href="{{ path('app_profil_new') }}">Create new</a> #}

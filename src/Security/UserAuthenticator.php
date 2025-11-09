@@ -51,8 +51,16 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        // Redirection selon le rôle de l'utilisateur
+        $user = $token->getUser();
+        if ($user instanceof Utilisateur) {
+            $roles = $user->getRoles();
+            if (in_array('ROLE_ADMIN', $roles)) {
+                return new RedirectResponse($this->urlGenerator->generate('admin_itineraires'));
+            }
+        }
+
+        // Par défaut, redirection vers le backoffice pour les utilisateurs normaux
         return new RedirectResponse($this->urlGenerator->generate('app_backoffice'));
     }
 

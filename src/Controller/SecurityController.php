@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -12,11 +12,13 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        if ($this->getUser() && $this->getUser()->getRoles() == ["ROLE_USER"]) {
+        // Si l'utilisateur est déjà connecté, rediriger selon son rôle
+        if ($this->getUser()) {
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('admin_itineraires');
+            }
+            // Pour les utilisateurs normaux (ROLE_USER)
             return $this->redirectToRoute('app_backoffice');
-        } else if($this->getUser() && $this->getUser()->getRoles() == ["ROLE_ADMIN"]){
-            return $this->redirectToRoute('admin_itineraires');
         }
 
         // get the login error if there is one
