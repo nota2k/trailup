@@ -10,8 +10,12 @@
         <div class="row-auto inline justify-between gap-15">
             <!--Thumbnail-->
             <div class="user-thmb-container self-center">
-                {% if user and user.miniature %}
-                    <img src="{{ asset(user.miniature) }}">
+                {% if user %}
+                    {% if user.miniature is defined and user.miniature %}
+                        <img src="{{ asset(user.miniature) }}">
+                    {% else %}
+                        <img src="{{ asset('/assets/img/thmb-user.png') }}">
+                    {% endif %}
                 {% else %}
                     <img src="{{ asset('/assets/img/thmb-user.png') }}">
                 {% endif %}

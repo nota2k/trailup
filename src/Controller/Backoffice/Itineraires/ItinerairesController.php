@@ -27,8 +27,17 @@ class ItinerairesController extends AbstractController
     public function index(EntityManagerInterface $entityManager, ItinerairesRepository $itinerairesRepository,InfoUserRepository $infoUserRepository): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
         
         $itineraires = $user->getItineraires()->getValues();
 
@@ -44,14 +53,38 @@ class ItinerairesController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager,InfoUserRepository $infoUserRepository): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
 
         $itineraire = new Itineraires();
         $form = $this->createForm(ItinerairesType::class, $itineraire);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Définir le createur si ce n'est pas déjà fait
+            if (!$itineraire->getCreateur()) {
+                $itineraire->setCreateur($user);
+            }
+            
+            // Définir une description par défaut si elle est vide
+            if (!$itineraire->getDescription() || trim($itineraire->getDescription()) === '') {
+                $itineraire->setDescription('');
+            }
+            
+            // Définir publie à false par défaut si null
+            if ($itineraire->getPublie() === null) {
+                $itineraire->setPublie(false);
+            }
+            
             $itineraire->addUtilisateur($user);
             $entityManager->persist($itineraire);
             $entityManager->flush();
@@ -72,8 +105,17 @@ class ItinerairesController extends AbstractController
     public function show(Itineraires $itineraire, InfoUserRepository $infoUserRepository,int $id): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
         // dd($itineraire);
 
         return $this->render('backoffice/itineraires/show.html.twig', [
@@ -88,8 +130,17 @@ class ItinerairesController extends AbstractController
     public function edit(Request $request, Itineraires $itineraire, EntityManagerInterface $entityManager,InfoUserRepository $infoUserRepository): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
 
         $form = $this->createForm(ItinerairesType::class, $itineraire);
         $form->handleRequest($request);
@@ -112,8 +163,12 @@ class ItinerairesController extends AbstractController
     #[Route('/delete/{id}', name: 'app_itineraires_delete', methods: ['POST', 'GET'])]
     public function delete(Request $request, Itineraires $itineraire, EntityManagerInterface $entityManager): Response
     {
-
         if ($this->isCsrfTokenValid('delete'.$itineraire->getId(), $request->request->get('_token'))) {
+            // Retirer toutes les relations ManyToMany avec les utilisateurs
+            foreach ($itineraire->getUtilisateur() as $utilisateur) {
+                $itineraire->removeUtilisateur($utilisateur);
+            }
+            
             $entityManager->remove($itineraire);
             $entityManager->flush();
         }
@@ -125,12 +180,21 @@ class ItinerairesController extends AbstractController
     public function published(EntityManagerInterface $entityManager, ItinerairesRepository $itinerairesRepository,InfoUserRepository $infoUserRepository): Response
     {
         $user = $this->getUser();
-
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
         
         $itineraires = $user->getItineraires()->getValues();
-        if($itineraires[0]->getPublie() === false){
+        if(!empty($itineraires) && $itineraires[0]->getPublie() === false){
             $itineraires = null;
         } else{
             $itineraires;

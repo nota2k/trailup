@@ -11,12 +11,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\DataTransformer\UserDataTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\File;
 
 use App\Form\DataTransformer\IssueToNumberTransformer;
 
@@ -34,8 +36,23 @@ class InfoUserType extends AbstractType
                 'label' => false])
             ->add('region', null, [
                 'label' => false])
-            ->add('miniature', null, [
-                'label' => false])
+            ->add('miniatureFile', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                            'image/webp',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF ou WebP)',
+                    ])
+                ],
+            ])
         ;
 
         // $builder->get('user')

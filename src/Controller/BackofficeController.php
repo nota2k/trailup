@@ -21,6 +21,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/backoffice')]
 class BackofficeController extends AbstractController
@@ -110,7 +113,7 @@ class BackofficeController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_profil_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, InfoUserRepository $infoUserRepository, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Request $request, InfoUserRepository $infoUserRepository, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger, int $id): Response
     {
         $user = $utilisateurRepository->find($id);
         
@@ -137,6 +140,40 @@ class BackofficeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $miniatureFile */
+            $miniatureFile = $form->get('miniatureFile')->getData();
+            
+            // Si un fichier a été uploadé
+            if ($miniatureFile) {
+                $originalFilename = pathinfo($miniatureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$miniatureFile->guessExtension();
+                
+                // Déplacer le fichier vers le répertoire de stockage
+                try {
+                    $uploadDir = $this->getParameter('kernel.project_dir').'/public/uploads/profiles';
+                    
+                    // Créer le répertoire s'il n'existe pas
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
+                    
+                    $miniatureFile->move($uploadDir, $newFilename);
+                    
+                    // Supprimer l'ancienne image si elle existe et n'est pas l'image par défaut
+                    $oldMiniature = $infoUser->getMiniature();
+                    if ($oldMiniature && $oldMiniature !== '/assets/img/thmb-user.png' && file_exists($this->getParameter('kernel.project_dir').'/public'.$oldMiniature)) {
+                        unlink($this->getParameter('kernel.project_dir').'/public'.$oldMiniature);
+                    }
+                    
+                    // Mettre à jour le chemin de la miniature
+                    $infoUser->setMiniature('/uploads/profiles/'.$newFilename);
+                } catch (FileException $e) {
+                    // Gérer l'erreur si le fichier n'a pas pu être déplacé
+                    $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
+                }
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_profil', ['id' => $id], Response::HTTP_SEE_OTHER);

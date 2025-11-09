@@ -30,8 +30,9 @@
             {{ form_widget(form.region) }}
 
             <!-- Miniature -->
-            {{ form_label(form.miniature, 'Miniature', {'label_attr': {'class': 'semibold'}}) }}
-            {{ form_widget(form.miniature) }}
+            {{ form_label(form.miniatureFile, 'Photo de profil', {'label_attr': {'class': 'semibold'}}) }}
+            {{ form_widget(form.miniatureFile, {'attr': {'accept': 'image/*'}}) }}
+            {{ form_errors(form.miniatureFile) }}
         </div>
         <div class="apercu-thmb colonne-50w flex-3">
             <img src="{{ asset( user.miniature )}}">

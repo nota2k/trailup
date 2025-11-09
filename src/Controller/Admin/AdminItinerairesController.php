@@ -40,9 +40,18 @@ class AdminItinerairesController extends AbstractController
     public function index(EntityManagerInterface $entityManager, ItinerairesRepository $itinerairesRepository,InfoUserRepository $infoUserRepository): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-
-        $infoUser = $infoUserRepository->find($id);
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
 
         $itineraires = $itinerairesRepository->findAll();
         $iti_count = count($itineraires);
@@ -60,8 +69,18 @@ class AdminItinerairesController extends AbstractController
     public function show(Itineraires $itineraire, InfoUserRepository $infoUserRepository,int $id): Response
     {
         $user = $this->getUser();
-        $id = $user->getId();
-        $infoUser = $infoUserRepository->find($id);
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $user]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($user);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
 
         return $this->render('backoffice/admin/itineraires/show.html.twig', [
             'user' => $infoUser,
@@ -74,8 +93,12 @@ class AdminItinerairesController extends AbstractController
     #[Route('/delete/{id}', name: 'admin_itineraires_delete', methods: ['POST', 'GET'])]
     public function delete_admin(Request $request, Itineraires $itineraire, EntityManagerInterface $entityManager): Response
     {
-
         if ($this->isCsrfTokenValid('delete'.$itineraire->getId(), $request->request->get('_token'))) {
+            // Retirer toutes les relations ManyToMany avec les utilisateurs
+            foreach ($itineraire->getUtilisateur() as $utilisateur) {
+                $itineraire->removeUtilisateur($utilisateur);
+            }
+            
             $entityManager->remove($itineraire);
             $entityManager->flush();
         }

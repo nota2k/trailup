@@ -53,7 +53,7 @@ class Itineraires
     #[ORM\Column]
     private ?bool $validation = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $createur = null;
 

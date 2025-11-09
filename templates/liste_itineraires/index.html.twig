@@ -7,18 +7,18 @@
     <div class="search-container">
         <form name="search" class="search" method="get">
             <input type="text" name="depart" placeholder="Où?" value="{{ param.depart }}">
-            <select name="niveau" id="niveau-select" value="{{ param.niveau }}">
+            <select name="niveau" id="niveau-select">
                 <option value="">Difficulté</option>
-                <option {{ param.niveau }} value="facile">Facile</option>
-                <option {{ param.niveau }} value="intermediaire">Intermediaire</option>
-                <option {{ param.niveau }} value="difficile">Difficile</option>
+                <option value="Facile" {% if param.niveau == 'Facile' or param.niveau == 'facile' %}selected{% endif %}>Facile</option>
+                <option value="Intermediaire" {% if param.niveau == 'Intermediaire' or param.niveau == 'intermediaire' %}selected{% endif %}>Intermediaire</option>
+                <option value="Difficile" {% if param.niveau == 'Difficile' or param.niveau == 'difficile' %}selected{% endif %}>Difficile</option>
             </select>
-            <input type="range" id="distance-max" name="distance" min="0" max="200" value="{{ param.distance }}" />
-            <input placeholder="0" type="number" id="duree-min" name="dureemin" value="{{ param.duree_min }}" />
-            <input placeholder="200" type="number" id="duree-max" name="dureemax" value="{{ param.duree_max }}" />
-            <input type="text" name="keyword" placeholder="Mot-clef" value="{{ param.keyword }}">
-            <button name="search" class="btn-kaki" type="submit">Rechercher</button>
-            <button name="reset" class="btn-green" type="submit">Réinitialiser</button>
+            <input type="range" id="distance-max" name="distance" min="0" max="200" value="{{ param.distance ? param.distance : 0 }}" />
+            <input placeholder="0" type="number" id="duree-min" name="dureemin" value="{{ param.duree_min ? param.duree_min : '' }}" />
+            <input placeholder="200" type="number" id="duree-max" name="dureemax" value="{{ param.duree_max ? param.duree_max : '' }}" />
+            <input type="text" name="keyword" placeholder="Mot-clef" value="{{ param.keyword ? param.keyword : '' }}">
+            <button name="search" class="btn-kaki" type="submit" value="1">Rechercher</button>
+            <a href="{{ path('app_liste_annonces') }}" class="btn-green">Réinitialiser</a>
         </form>
     </div>
 </div>
@@ -69,7 +69,7 @@
                                     <img class="icon" src="assets/img/icons/icon-niveau.png">
                                     {# {{ dump(annonce) }} #}
                                 </div>
-                                <p class="niveau">{{ annonce.itineraire.niveau|join() }}</p>
+                                <p class="niveau">{{ annonce.itineraire.niveau|join(', ') }}</p>
                             </div>
                         </div>
                         <p class="resume">{{ annonce.itineraire.description }}</p>
@@ -101,9 +101,9 @@
                     </div>
                 </div>
             </section>
-            {% else %}
-                <p>Aucune annonce trouvée</p>
             {% endif %}
+            {% else %}
+                <p class="text-center padding-20">Aucun itinéraire trouvé pour ces critères de recherche.</p>
             {% endfor %}
         </div>
         <!----End Scroll---->

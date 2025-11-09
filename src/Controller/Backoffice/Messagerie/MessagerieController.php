@@ -29,19 +29,32 @@ use Symfony\Component\Routing\Attribute\Route;
 class MessagerieController extends AbstractController
 {
     #[Route('/', name: 'app_messagerie')]
-    public function index(EntityManagerInterface $entityManager, DiscussionsRepository $discussionsRepository, MessagesRepository $messagesRepository): Response
+    public function index(EntityManagerInterface $entityManager, DiscussionsRepository $discussionsRepository, MessagesRepository $messagesRepository, InfoUserRepository $infoUserRepository): Response
     {
         // check if the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         //return the current logged in user
         /** @var \App\Entity\Utilisateur $utilisateur */
-        $utilisateur = $this->getUser();   
+        $utilisateur = $this->getUser();
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $utilisateur]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($utilisateur);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
+        
         $discussions = $utilisateur->getDiscussions()->getValues();
         // $messages = $discussions[0];
         // dd($utilisateur->getMessages()->getValues());
         return $this->render('backoffice/messagerie/index.html.twig',[
-            'user' => $utilisateur,
+            'user' => $infoUser,
             'discussions' => $discussions,
             'title_controller' => 'Mes messages',
             'btn_breakcrumb' => 'app_backoffice'
@@ -50,16 +63,29 @@ class MessagerieController extends AbstractController
     }
 
     #[Route('/conversation/{id}', name: 'app_conversation_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager, DiscussionsRepository $discussionsRepository,Messages $messages, int $id): Response
+    public function show(EntityManagerInterface $entityManager, DiscussionsRepository $discussionsRepository,Messages $messages, int $id, InfoUserRepository $infoUserRepository): Response
     {
         /** @var \App\Entity\Utilisateur $utilisateur */
         $utilisateur = $this->getUser();
+        
+        // Chercher InfoUser par l'utilisateur, pas par son propre ID
+        $infoUser = $infoUserRepository->findOneBy(['user' => $utilisateur]);
+        
+        // Si InfoUser n'existe pas, créer un objet avec des valeurs par défaut
+        if (!$infoUser) {
+            $infoUser = new InfoUser();
+            $infoUser->setUserId($utilisateur);
+            if (!$infoUser->getMiniature()) {
+                $infoUser->setMiniature('/assets/img/thmb-user.png');
+            }
+        }
+        
         $discussion = $utilisateur->getDiscussions()->getValues();
         $messages = $discussion[0]->getMessages();
         $id = $discussion[0]->getId();
         var_dump(get_debug_type($messages));
         return $this->render('backoffice/messagerie/conversation/conversation.html.twig', [
-            'user' => $utilisateur,
+            'user' => $infoUser,
             'discussion' => $discussion,
             'messages' => $messages,
             'title_controller' => 'Conversation',

@@ -210,21 +210,49 @@ class ItinerairesRepository extends ServiceEntityRepository
     }
 
 
-   public function findByFields($lieu, $niveau, $distance, $min, $max, $term): array
-   {
-        $lieuList = explode(' ', $lieu);
-        $termList = explode(' ', $term);
-       return $this->createQueryBuilder('i')
-           ->andWhere('i.depart LIKE :searchlieu OR i.niveau = :niveau OR i.distance < :distance OR i.duree BETWEEN :min AND :max OR i.titre LIKE :searchTerm OR i.description LIKE :searchTerm')
-           ->setParameter('searchlieu', '%'.$lieu.'%')
-           ->setParameter('niveau', $niveau)
-           ->setParameter('distance', $distance)
-           ->setParameter('min', $min)
-           ->setParameter('max', $max)
-           ->setParameter('searchTerm', '%'.$term.'%')  
-           
-           ->getQuery()
-            ->getResult()
-       ;
-   }
+    /**
+     * Recherche d'itinéraires avec plusieurs critères combinés
+     */
+    public function findByMultipleCriteria(?string $depart = null, ?string $niveau = null, ?int $distance = null, ?int $dureeMin = null, ?int $dureeMax = null, ?string $keyword = null): array
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->where('i.publie = :publie')
+            ->setParameter('publie', true);
+        
+        if (!empty($depart)) {
+            $qb->andWhere('i.depart LIKE :depart')
+               ->setParameter('depart', '%' . $depart . '%');
+        }
+        
+        if (!empty($niveau)) {
+            // Le niveau est stocké comme un array JSON, on cherche si le niveau est dans le tableau
+            // Doctrine stocke les arrays comme JSON, donc on utilise LIKE pour chercher dans la chaîne JSON
+            $qb->andWhere('i.niveau LIKE :niveau')
+               ->setParameter('niveau', '%' . $niveau . '%');
+        }
+        
+        if (!empty($distance) && $distance > 0) {
+            $qb->andWhere('i.distance <= :distance')
+               ->setParameter('distance', $distance);
+        }
+        
+        if (!empty($dureeMin) && $dureeMin > 0) {
+            $qb->andWhere('i.duree >= :dureeMin')
+               ->setParameter('dureeMin', $dureeMin);
+        }
+        
+        if (!empty($dureeMax) && $dureeMax > 0) {
+            $qb->andWhere('i.duree <= :dureeMax')
+               ->setParameter('dureeMax', $dureeMax);
+        }
+        
+        if (!empty($keyword)) {
+            $qb->andWhere('i.titre LIKE :keyword OR i.description LIKE :keyword')
+               ->setParameter('keyword', '%' . $keyword . '%');
+        }
+        
+        return $qb->orderBy('i.titre', 'ASC')
+                  ->getQuery()
+                  ->getResult();
+    }
 }
