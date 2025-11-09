@@ -127,17 +127,18 @@ Si vous voyez des avertissements comme `Deprecated: Constant E_STRICT is depreca
 
 **Solutions :**
 
-1. **Les ignorer** (recommandé) : Ces avertissements n'affectent pas le fonctionnement de l'application.
+1. **Les ignorer** (recommandé) : Ces avertissements n'affectent pas le fonctionnement de l'application. Ils disparaîtront lorsque Symfony sera mis à jour pour être compatible avec PHP 8.3+.
 
-2. **Réduire les avertissements** : Ajoutez dans votre fichier `php.ini` ou créez un fichier `.user.ini` à la racine du projet :
-   ```ini
-   error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
-   ```
+2. **Réduire les avertissements** : 
+   - Un fichier `.user.ini` a été créé à la racine du projet pour réduire les avertissements dans les requêtes web
+   - Les fichiers `bin/console` et `public/index.php` ont été modifiés pour réduire les avertissements dans les commandes console et les requêtes web
+   - Note : Les avertissements provenant du code Symfony dans `vendor/` ne peuvent pas être supprimés sans mettre à jour Symfony
 
-3. **Pour les commandes console uniquement** : Vous pouvez créer un alias dans votre shell :
+3. **Mettre à jour Symfony** (solution à long terme) : Mettre à jour vers Symfony 6.4+ ou 7.x qui sont compatibles avec PHP 8.3+ :
    ```bash
-   alias symfony-console='php -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_STRICT" bin/console'
+   composer require symfony/framework-bundle:"^6.4" --no-interaction
    ```
+   ⚠️ **Attention** : Cela peut nécessiter d'autres modifications dans votre code.
 
 ### Erreur de permissions
 
