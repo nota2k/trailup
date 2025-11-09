@@ -35,6 +35,9 @@ class Itineraires
     #[ORM\Column(length: 255)]
     private ?string $depart = null;
 
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $codePostal = null;
+
     #[ORM\Column]
     private ?int $distance = null;
 
@@ -158,6 +161,18 @@ class Itineraires
     public function setDepart(string $depart): static
     {
         $this->depart = $depart;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(?string $codePostal): static
+    {
+        $this->codePostal = $codePostal;
 
         return $this;
     }

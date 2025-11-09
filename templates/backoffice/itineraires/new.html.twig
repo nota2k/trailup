@@ -4,6 +4,11 @@
 {% include("backoffice/bo-parts/breakcrumb.html.twig") %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <a href="{{ path('app_itineraires_liste') }}">Retour</a>
 <div class="colonnes gap-30">
@@ -21,4 +26,192 @@
         </div> #}
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script>
+(function() {
+    function initTomSelect() {
+        // Chercher le champ par ID ou par name
+        let villeInput = document.getElementById('ville-input');
+        let codePostalInput = document.getElementById('code-postal-input');
+        
+        // Si l'ID n'est pas trouvé, chercher par le name du formulaire Symfony
+        if (!villeInput) {
+            // Chercher par le name du champ (format: form[depart])
+            villeInput = document.querySelector('input[name="{{ field_name(form.depart) }}"]');
+        }
+        
+        // Chercher le champ code postal par name si l'ID n'est pas trouvé
+        if (!codePostalInput) {
+            codePostalInput = document.querySelector('input[name="{{ field_name(form.codePostal) }}"]');
+            if (codePostalInput && !codePostalInput.id) {
+                codePostalInput.id = 'code-postal-input';
+            }
+        }
+        
+        if (!villeInput) {
+            console.error('Champ ville-input non trouvé. Recherche de tous les inputs:', document.querySelectorAll('input[type="text"]'));
+            // Réessayer après un court délai
+            setTimeout(initTomSelect, 200);
+            return;
+        }
+        
+        console.log('Champ ville trouvé:', villeInput);
+        console.log('Champ code postal trouvé:', codePostalInput);
+        
+        // S'assurer que l'ID est bien défini
+        if (!villeInput.id) {
+            villeInput.id = 'ville-input';
+        }
+        
+        let tomSelectInstance = null;
+        
+        // Initialiser TomSelect
+        try {
+            tomSelectInstance = new TomSelect('#' + villeInput.id, {
+                valueField: 'value',
+                labelField: 'text',
+                searchField: ['text', 'ville', 'codePostal'],
+                load: function(query, callback) {
+                    if (!query.length) return callback();
+                    
+                    fetch('{{ path('api_geo_search') }}?q=' + encodeURIComponent(query))
+                        .then(response => response.json())
+                        .then(data => {
+                            callback(data);
+                        })
+                        .catch((error) => {
+                            console.error('Erreur lors de la recherche:', error);
+                            callback();
+                        });
+                },
+                onItemAdd: function(value) {
+                    console.log('Ville sélectionnée (value):', value);
+                    console.log('Options disponibles:', this.options);
+                    console.log('Items:', this.items);
+                    
+                    // Extraire le code postal et la ville de la valeur sélectionnée
+                    // TomSelect stocke les données dans this.options avec la valeur comme clé
+                    let selectedOption = this.options[value];
+                    
+                    // Si pas trouvé, essayer de chercher dans les items
+                    if (!selectedOption && this.items && this.items.length > 0) {
+                        const itemValue = this.items[0];
+                        selectedOption = this.options[itemValue];
+                    }
+                    
+                    console.log('Option sélectionnée:', selectedOption);
+                    
+                    if (selectedOption) {
+                        const ville = selectedOption.ville || '';
+                        const codePostal = selectedOption.codePostal || '';
+                        
+                        console.log('Ville extraite:', ville);
+                        console.log('Code postal extrait:', codePostal);
+                        
+                        // Mettre à jour le champ code postal automatiquement
+                        const cpInput = document.getElementById('code-postal-input') || codePostalInput;
+                        if (cpInput) {
+                            if (codePostal) {
+                                cpInput.value = codePostal;
+                                console.log('Code postal mis à jour dans le champ:', cpInput.value);
+                                cpInput.dispatchEvent(new Event('input', { bubbles: true }));
+                                cpInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            } else {
+                                console.warn('Aucun code postal trouvé pour cette ville');
+                            }
+                        } else {
+                            console.error('Champ code postal non trouvé');
+                        }
+                        
+                        // Mettre à jour le champ ville avec juste le nom (pour le formulaire Symfony)
+                        setTimeout(() => {
+                            const actualInput = document.getElementById(villeInput.id);
+                            if (actualInput && ville) {
+                                actualInput.value = ville;
+                                actualInput.dispatchEvent(new Event('input', { bubbles: true }));
+                                actualInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            }
+                        }, 50);
+                    } else {
+                        console.error('Option sélectionnée non trouvée. Valeur:', value);
+                        console.error('Toutes les options:', Object.keys(this.options));
+                    }
+                },
+                render: {
+                    option: function(data, escape) {
+                        return '<div><strong>' + escape(data.ville) + '</strong>' + 
+                               (data.codePostal ? ' <span style="color: #666;">(' + escape(data.codePostal) + ')</span>' : '') + 
+                               '</div>';
+                    },
+                    item: function(data, escape) {
+                        // Afficher juste le nom de la ville dans le champ sélectionné
+                        return '<div>' + escape(data.ville) + '</div>';
+                    },
+                    no_results: function(data, escape) {
+                        return '<div class="no-results">Aucun résultat trouvé pour "' + escape(data.input) + '"</div>';
+                    }
+                },
+                placeholder: 'Rechercher une ville...',
+                create: false,
+                maxItems: 1
+            });
+            
+            console.log('TomSelect initialisé avec succès');
+        } catch (error) {
+            console.error('Erreur lors de l\'initialisation de TomSelect:', error);
+        }
+        
+        // Si l'utilisateur tape dans le champ code postal, rechercher par code postal
+        if (codePostalInput && tomSelectInstance) {
+            let codePostalTimeout;
+            codePostalInput.addEventListener('input', function() {
+                clearTimeout(codePostalTimeout);
+                const cp = this.value;
+                
+                if (cp.length >= 2) {
+                    codePostalTimeout = setTimeout(() => {
+                        fetch('{{ path('api_geo_search_by_postal') }}?cp=' + encodeURIComponent(cp))
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.length > 0 && tomSelectInstance) {
+                                    tomSelectInstance.clearOptions();
+                                    data.forEach(item => {
+                                        tomSelectInstance.addOption(item);
+                                    });
+                                    tomSelectInstance.refreshOptions(false);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error('Erreur lors de la recherche par code postal:', error);
+                            });
+                    }, 300);
+                }
+            });
+        }
+    }
+    
+    // Vérifier que TomSelect est chargé
+    function waitForTomSelect() {
+        if (typeof TomSelect === 'undefined') {
+            console.log('TomSelect pas encore chargé, nouvelle tentative...');
+            setTimeout(waitForTomSelect, 100);
+            return;
+        }
+        
+        // Essayer plusieurs fois si le DOM n'est pas encore prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTomSelect);
+        } else {
+            // Le DOM est déjà chargé
+            setTimeout(initTomSelect, 100);
+        }
+    }
+    
+    waitForTomSelect();
+})();
+</script>
 {% endblock %}

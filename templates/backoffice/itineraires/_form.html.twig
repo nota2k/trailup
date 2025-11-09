@@ -7,7 +7,12 @@
     
     <div class="block-input">
         <label class="semibold">Lieu de départ</label>
-        {{ form_row(form.depart, {'attr': {'class': 'vertical w-100'}}) }}
+        {{ form_widget(form.depart, {'attr': {'class': 'vertical w-100', 'id': 'ville-input', 'autocomplete': 'off'}}) }}
+    </div>
+    <div class="block-input">
+        <label class="semibold">Code postal</label>
+        {{ form_widget(form.codePostal, {'attr': {'class': 'vertical w-100', 'id': 'code-postal-input', 'autocomplete': 'off'}}) }}
+        <small class="text-muted">Sera rempli automatiquement lors de la sélection de la ville</small>
     </div>
     <div class="block-input">
         {{ form_label(form.duree, 'Durée', {'label_attr': {'class': 'semibold'}}) }}

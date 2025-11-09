@@ -51,6 +51,14 @@ class ItinerairesType extends AbstractType
                     ],
                 ])
             ->add('depart', null, array('label' => false))
+            ->add('codePostal', null, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'code-postal-input',
+                    'placeholder' => 'Code postal'
+                ]
+            ])
             ->add('distance')
             ->add('duree')
             ->add('accepte', ChoiceType::class, [
