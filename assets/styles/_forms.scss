@@ -11,6 +11,7 @@ select {
     border-radius: var(--border-radius-40);
     box-sizing: border-box;
     font-size: var(--font-size-base);
+    padding: 5px;
 }
 
 .search {
@@ -111,9 +112,30 @@ textarea {
 }
 
 .login {
-    padding: 3em var(--padding-large);
-    border-radius: 15px;
-    color: #000000;
+    padding: var(--spacing-xl) var(--spacing-large);
+    border-radius: 30px;
+    min-width: 300px;
+    box-sizing: border-box;
+    color: var(--btn-primary-hover);
+    gap: var(--spacing-small);
+
+    h1{
+        font-size: var(--font-size-4xl);
+        line-height: 2rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-small);
+    }
+
+    label{
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        input{
+            width: 100%;
+        }
+    }
 }
 
 #itineraires_accepte label {

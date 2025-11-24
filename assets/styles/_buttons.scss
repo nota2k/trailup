@@ -12,7 +12,7 @@ button{
     box-sizing: border-box;
     min-width: 150px;
     max-width: fit-content;
-    padding: var(--spacing-small) var(--spacing-large);
+    padding: var(--spacing-xs) var(--spacing-medium);
     cursor: pointer;
     transition: 0.2s ease-in-out all;
     font-size: var(--font-size-base);
@@ -26,5 +26,20 @@ button{
     &.btn-kaki{
         background-color: var(--kaki);
         color: var(--blanc);
+    }
+}
+
+.btn-google{
+    color: var(--blanc);
+    padding: var(--spacing-small) var(--spacing-large);
+    color: var(--brun);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-small);
+
+    svg{
+        width:  30px;
+        height: 30px;
     }
 }
