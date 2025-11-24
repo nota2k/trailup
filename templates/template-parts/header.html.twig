@@ -34,7 +34,19 @@
         <a href="{{ path('app_login') }}" class="connect">
             <button class="btn-green">Connexion</button>
         </a>
-        {% endif %}            
+        {% endif %}      
+        <nav class="menu-mobile">
+        <div class="cross-icon">
+            <span class="cross-icon-line"></span>
+            <span class="cross-icon-line"></span>
+            <span class="cross-icon-line"></span>
+        </div>
+            <ul class="list-inline">
+                <li class="menu-item"><a href="{{ path('app_liste_annonces') }}"> Chercher une balade</a></li>
+                <li class="menu-item">À propos</li>
+                <li class="menu-item">Fonctionnalités</li>
+            </ul>
+        </nav>      
         </nav>
     </div>
 </header>

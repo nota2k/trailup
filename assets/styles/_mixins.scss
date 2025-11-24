@@ -1,0 +1,138 @@
+// Mixins de base pour les media queries
+@mixin min-width($width) {
+    @media (min-width: $width) {
+        @content;
+    }
+}
+
+@mixin max-width($width) {
+    @media (max-width: $width) {
+        @content;
+    }
+}
+
+@mixin between-width($min, $max) {
+    @media (min-width: $min) and (max-width: $max) {
+        @content;
+    }
+}
+
+// Variables pour les breakpoints
+$breakpoint-xs: 320px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-xxl: 1440px;
+$breakpoint-xxxl: 1920px;
+
+// Mixins pour les tailles d'écran spécifiques
+@mixin mobile-only {
+    @media (max-width: #{$breakpoint-md - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet-only {
+    @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 1px}) {
+        @content;
+    }
+}
+
+@mixin desktop-only {
+    @media (min-width: $breakpoint-lg) {
+        @content;
+    }
+}
+
+@mixin mobile-and-tablet {
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet-and-desktop {
+    @media (min-width: $breakpoint-md) {
+        @content;
+    }
+}
+
+// Mixins avec breakpoints nommés
+@mixin xs {
+    @media (min-width: $breakpoint-xs) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (min-width: $breakpoint-sm) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: $breakpoint-md) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: $breakpoint-lg) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: $breakpoint-xl) {
+        @content;
+    }
+}
+
+@mixin xxl {
+    @media (min-width: $breakpoint-xxl) {
+        @content;
+    }
+}
+
+@mixin xxxl {
+    @media (min-width: $breakpoint-xxxl) {
+        @content;
+    }
+}
+
+// Mixins pour max-width avec breakpoints
+@mixin max-xs {
+    @media (max-width: #{$breakpoint-xs - 1px}) {
+        @content;
+    }
+}
+
+@mixin max-sm {
+    @media (max-width: #{$breakpoint-sm - 1px}) {
+        @content;
+    }
+}
+
+@mixin max-md {
+    @media (max-width: #{$breakpoint-md - 1px}) {
+        @content;
+    }
+}
+
+@mixin max-lg {
+    @media (max-width: #{$breakpoint-lg - 1px}) {
+        @content;
+    }
+}
+
+@mixin max-xl {
+    @media (max-width: #{$breakpoint-xl - 1px}) {
+        @content;
+    }
+}
+
+@mixin max-xxl {
+    @media (max-width: #{$breakpoint-xxl - 1px}) {
+        @content;
+    }
+}

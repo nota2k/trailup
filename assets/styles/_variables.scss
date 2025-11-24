@@ -1,0 +1,43 @@
+
+:root{
+    --border-radius-5: 5px;
+    --border-radius-10: 10px;
+    --border-radius-40: 40px;
+    --border-radius-50: 50px;
+
+    --spacing-small: clamp(0.625rem, 0.5536rem + 0.3571vw, 0.8333rem);
+    --spacing-medium: clamp(0.875rem, 0.8036rem + 0.3571vw, 1.0833rem);
+    --spacing-large: clamp(1.125rem, 1.0536rem + 0.3571vw, 1.3333rem);
+    --spacing-xl: clamp(2.375rem, 1.3036rem + 0.3571vw, 4.5833rem);
+
+    --fluo:#ECF23D;
+	--jaune: #EAF205;
+	--jaune-pastel:#EFF291;
+	--jaune-light:#FAFCDA;
+	--linear-jaune:linear-gradient(56deg, #F7F7DA 3.17%, #EDFFE8 100%);
+	--vert:#10734F;
+	--vert-fonce:#0F2624;
+	--vert-gris:#48594E;
+	--kaki:#A2A637;
+	--bleu-clair:#d8f7f2;
+	--bleu:#2398b3;
+	--bleu-fonce:#2a4f5c;
+	--linear-bleu:linear-gradient(56deg, #FAFCDA 3.17%, #f2fbf9 100%);
+	--gris:#BFBFBF;
+	--gris-clair:#DEDEDE;
+	--gris-moyen:#858585;
+	--gris-fonce:hsl(0, 0%, 40%);
+	--marron-clair:#A69A60;
+	--marron:#A68A56;
+	--marron-fonce:#735826;
+	--brun:#262626;
+	--blanc:#FFFFFF;
+	--ocre:#BF7C41;
+	--rouge:#C96E51;
+	--rouge-fonce:#8e3922;
+	--grey-shadow:0px 2px 6px 0px rgba(0, 0, 0, 0.25);
+	--inset-shadow:-3px 0 10px -6px rgba(0, 0, 0, 0.15) inset;
+
+	--radius-5:5px;
+	--padding-large:1.5em 2em;
+}
