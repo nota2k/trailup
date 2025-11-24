@@ -25,8 +25,8 @@
         {% endif %}
         
         <!----- Identifiant ---->
-        <label class="semibold" for="inputUsername">Identifiant</label>
-        <input type="text" value="{{ field_value(registrationForm.username) }}" name="{{ field_name(registrationForm.username) }}" id="registration_form_username" class="form-control" required autofocus>
+        <label class="semibold" for="inputUsername">Identifiant
+        <input type="text" value="{{ field_value(registrationForm.username) }}" name="{{ field_name(registrationForm.username) }}" id="registration_form_username" class="form-control" required autofocus></label>
         {% if registrationForm.username.vars.errors|length > 0 %}
             <div class="text-danger">
                 {% for error in registrationForm.username.vars.errors %}
@@ -36,8 +36,8 @@
         {% endif %}
         
         <!----- MDP ---->
-        <label class="semibold" for="registration_form_plainPassword_first">Mot de passe</label>
-        <input type="password" name="{{ field_name(registrationForm.plainPassword.first) }}" id="registration_form_plainPassword_first" class="form-control" required>
+        <label class="semibold" for="registration_form_plainPassword_first">Mot de passe
+        <input type="password" name="{{ field_name(registrationForm.plainPassword.first) }}" id="registration_form_plainPassword_first" class="form-control" required></label>
         {% if registrationForm.plainPassword.first.vars.errors|length > 0 %}
             <div class="text-danger">
                 {% for error in registrationForm.plainPassword.first.vars.errors %}
@@ -47,8 +47,8 @@
         {% endif %}
 
         <!-----Confirmation MDP ---->
-        <label class="semibold" for="registration_form_plainPassword_second">Confirmation du mot de passe</label>
-        <input type="password" name="{{ field_name(registrationForm.plainPassword.second) }}" id="registration_form_plainPassword_second" class="form-control" required>
+        <label class="semibold" for="registration_form_plainPassword_second">Confirmation du mot de passe<
+        <input type="password" name="{{ field_name(registrationForm.plainPassword.second) }}" id="registration_form_plainPassword_second" class="form-control" required></label>
         {% if registrationForm.plainPassword.second.vars.errors|length > 0 %}
             <div class="text-danger">
                 {% for error in registrationForm.plainPassword.second.vars.errors %}
