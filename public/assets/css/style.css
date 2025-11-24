@@ -628,94 +628,6 @@ th{
 	z-index: 3;
 }
 
-/* Forms */
-
-.block-input{
-	display: flex;
-	flex-direction: column;
-	gap:10px;
-	width: 100%;
-}
-
-.switch{
-	position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 25px;
-	
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-	display: flex;
-	justify-content: flex-start;
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 19px;
-  width: 19px;
-	left: 1px;
-  top: 1px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(25px);
-  -ms-transform: translateX(25px);
-  transform: translateX(25px);
-}
-
-textarea{
-	resize: none;
-}
-
-.edit{
-	width: 25px;
-}
-
-.new-title{
-	padding:10px 1em;
-	border-radius: 5px;
-}
-
-.login{
-	padding: 3em var(--padding-large);
-	border-radius: 15px;
-	color:#000000;
-}
-
-#itineraires_accepte label{
-	display: inline-flex;
-	justify-content: flex-start;
-	align-items: center;
-	flex-wrap: wrap;
-}
 
 /* Rounded sliders */
 .slider.round {
@@ -1006,37 +918,6 @@ button{
 	background-color:var(--kaki);
 }
 
-.search{
-	width: 100%;
-	box-sizing: border-box;
-	background-color:var(--blanc);
-	border-radius: 30px;
-	padding: 0.5em 1em;
-	display: inline-flex;
-}
-
-.search >*{
-	flex-grow: 2;
-	padding: 0.5em 1em;
-}
-
-.search button{
-	min-width: 180px!important;
-}
-
-.search input,
-.search select{
-	border: inherit;
-	background: inherit;
-	width: calc(100% / 4);
-}
-
-.search input:not(input:first-child),
-.search select{
-	border-left: 1px solid gray;
-	margin-left: 1em;
-}
-
 .border-thin{
 	border:1px solid var(--gris-clair);
 }
@@ -1246,36 +1127,6 @@ footer{
 	
 	.log-wrapper {
 		gap: 15px;
-	}
-	
-	/* Search */
-	.search {
-		flex-direction: column;
-		gap: 15px;
-		padding: 1em;
-	}
-	
-	.search > * {
-		width: 100%;
-		border-left: none !important;
-		margin-left: 0 !important;
-		border-top: 1px solid var(--gris-clair);
-		padding-top: 15px;
-	}
-	
-	.search > *:first-child {
-		border-top: none;
-		padding-top: 0.5em;
-	}
-	
-	.search input,
-	.search select {
-		width: 100%;
-	}
-	
-	.search button {
-		min-width: 100% !important;
-		margin-top: 10px;
 	}
 	
 	/* Breakcrumb */

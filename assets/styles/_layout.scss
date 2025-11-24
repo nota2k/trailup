@@ -31,15 +31,12 @@ section{
         }
 
         #colonne-g{
-            background-color: var(--bleu-clair);
-            padding: var(--padding-large) var(--spacing-medium);
-            border-radius: var(--border-radius-5);
-            color: var(--blanc);
-
-            p{
-                font-size: var(--font-size-medium);
-                font-weight: 400;
-                color: var(--vert-fonce);
+            h2{
+                margin: var(--spacing-medium);
+                font-size: var(--font-size-5xl);
+                line-height: 2.7rem;
+                font-weight: 600;
+                color: var(--marron-clair);
             }
         }
 

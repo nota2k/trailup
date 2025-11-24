@@ -1,0 +1,30 @@
+@use "variables";
+@use "mixins";
+
+:root{
+    --btn-primary: var(--bleu);
+    --btn-primary-hover: var(--bleu-fonce);
+}
+
+button{
+    appearance: none;
+    border-radius: var(--border-radius-40);
+    box-sizing: border-box;
+    min-width: 150px;
+    max-width: fit-content;
+    padding: var(--spacing-small) var(--spacing-large);
+    cursor: pointer;
+    transition: 0.2s ease-in-out all;
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    margin-top: var(--spacing-small);
+
+    @media screen and (min-width: 768px) {
+        margin-top: 0;
+    }
+
+    &.btn-kaki{
+        background-color: var(--kaki);
+        color: var(--blanc);
+    }
+}
