@@ -302,7 +302,7 @@ select{
 	align-items: stretch;
 }
 
-.colonnes-2{
+/* .colonnes-2{
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
@@ -337,7 +337,7 @@ select{
 	width:80%;
 	flex-shrink: 2;
 	flex-grow: 2;
-}
+} */
 
 /* Grid Layout */
 
@@ -1136,6 +1136,7 @@ footer{
 		max-width: 100%;
 	}
 	
+
 	.colonne-60w {
 		min-width: 100%;
 		width: 100%;
@@ -1198,7 +1199,7 @@ footer{
 	}
 	
 	/* Layout Flex */
-	.colonnes-2 {
+	/* .colonnes-2 {
 		flex-direction: column;
 	}
 	
@@ -1225,7 +1226,7 @@ footer{
 	
 	.gap-15 {
 		gap: 10px;
-	}
+	} */
 	
 	/* Header */
 	.header-wrapper {

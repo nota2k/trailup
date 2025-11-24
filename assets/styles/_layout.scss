@@ -5,4 +5,46 @@
 
 section{
     padding: var(--spacing-xl);
+    box-sizing: border-box;
+}
+
+.avantages{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    .colonnes-2{
+        display: flex;
+        gap: var(--spacing-medium);
+        flex-wrap: wrap;
+        align-items: stretch;
+
+        .colonne-50w{
+            width: 100%;
+            flex-grow: 2;
+
+            @media screen and (min-width: 768px) {
+                max-width: 45%;
+            }
+        }
+
+        #colonne-g{
+            background-color: var(--bleu-clair);
+            padding: var(--padding-large) var(--spacing-medium);
+            border-radius: var(--border-radius-5);
+            color: var(--blanc);
+
+            p{
+                font-size: var(--font-size-medium);
+                font-weight: 400;
+                color: var(--vert-fonce);
+            }
+        }
+
+        #colonne-d{
+            width: 50%;
+        }
+    }
 }
