@@ -1,0 +1,12 @@
+// add your SASS styles in this file
+@use 'variables';
+@use 'mixins';
+@use "layout";
+@use "forms";
+@use "typography";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

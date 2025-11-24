@@ -1,0 +1,62 @@
+@font-face {
+    font-family: "Scout";
+    src: url("../fonts/scout/Scout-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Scout";
+    src: url("../fonts/scout/Scout-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Scout";
+    src: url("../fonts/scout/Scout-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Corbel";
+    src: url("../fonts/corbel/Corbel.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Corbel";
+    src: url("../fonts/corbel/Corbel-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Scout";
+    src: url("../fonts/scout/Scout-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Scout";
+    src: url("../fonts/scout/Scout-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --font-scout: "Scout", sans-serif;
+    --font-corbel: "Corbel", sans-serif;
+    --font-size-base: clamp(1rem, 0.9286rem + 0.3571vw, 1.1667rem);
+    --font-size-small: clamp(0.875rem, 0.8036rem + 0.3571vw, 1.0833rem);
+    --font-size-medium: clamp(1.125rem, 1.0536rem + 0.3571vw, 1.25rem);
+    --font-size-large: clamp(1.375rem, 1.3036rem + 0.3571vw, 1.4167rem);
+    --font-size-x-large: clamp(1.625rem, 1.5536rem + 0.3571vw, 1.5833rem);
+    --font-size-xx-large: clamp(1.875rem, 1.8036rem + 0.3571vw, 1.75rem);
+    --font-size-xxx-large: clamp(2.125rem, 2.0536rem + 0.3571vw, 1.9167rem);
+    --font-size-xxxx-large: clamp(2.375rem, 2.3036rem + 0.3571vw, 2.0833rem);
+    --font-size-xxxxx-large: clamp(2.625rem, 2.5536rem + 0.3571vw, 2.25rem);
+}
