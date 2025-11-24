@@ -255,4 +255,17 @@ class ItinerairesRepository extends ServiceEntityRepository
                   ->getQuery()
                   ->getResult();
     }
+
+    /**
+     * Récupère les 3 derniers itinéraires enregistrés
+     * @return Itineraires[] Returns an array of Itineraires objects
+     */
+    public function findLastThreeItineraires(): array
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.id', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+    }
 }

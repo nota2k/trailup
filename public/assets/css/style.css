@@ -103,6 +103,7 @@ p,h1{
 
 h1,h2,h3{
 	margin: 0.4em initial;
+	font-size:clamp(36px, 6vw, 37px);
 }
 
 p{

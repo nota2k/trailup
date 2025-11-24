@@ -9,6 +9,7 @@ use App\Repository\ChevauxRepository;
 
 use App\Entity\InfoUser;
 use App\Repository\InfoUserRepository;
+use App\Repository\ItinerairesRepository;
 
 use App\Form\InfoUserType;
 use Doctrine\ORM\EntityManager;
@@ -24,18 +25,22 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/backoffice')]
 class BackofficeController extends AbstractController
 {
     #[Route('/', name: 'app_backoffice')]
-    public function index(EntityManagerInterface $entityManager,InfoUserRepository $infoUserRepository): Response
-    {
+    public function index(
+        EntityManagerInterface $entityManager,
+        InfoUserRepository $infoUserRepository,
+        ItinerairesRepository $itinerairesRepository,
+        HttpClientInterface $httpClient
+    ): Response {
         // check if the user is authenticated first
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $utilisateur = $this->getUser();
-        $id = $utilisateur->getId();
         // Chercher InfoUser par l'utilisateur, pas par son propre ID
         $infoUser = $infoUserRepository->findOneBy(['user' => $utilisateur]);
         
@@ -49,11 +54,66 @@ class BackofficeController extends AbstractController
             }
         }
         
-        return $this->render('backoffice/backoffice.html.twig',[
+        // Récupérer les 3 derniers itinéraires
+        $derniersItineraires = $itinerairesRepository->findLastThreeItineraires();
+        
+        // Récupérer la météo si la ville est renseignée
+        $meteo = null;
+        if ($infoUser && $infoUser->getVille()) {
+            $meteo = $this->getWeatherData($httpClient, $infoUser->getVille());
+        }
+        
+        return $this->render('backoffice/index.html.twig',[
             'user' => $infoUser,
-            'title_controller' => 'Mon profil',
+            'derniersItineraires' => $derniersItineraires,
+            'meteo' => $meteo,
+            'title_controller' => 'Tableau de bord',
             'btn_breakcrumb' => 'app_backoffice'
         ]);
+    }
+
+    /**
+     * Récupère les données météo pour une ville donnée via WeatherAPI
+     */
+    private function getWeatherData(HttpClientInterface $httpClient, string $ville): ?array
+    {
+        $apiKey = $_ENV['WEATHERAPI_KEY'] ?? 'fbaf44dbbffc4a40810190513250911';
+        
+        if (!$apiKey) {
+            return null;
+        }
+        
+        try {
+            $response = $httpClient->request('GET', 'https://api.weatherapi.com/v1/current.json', [
+                'query' => [
+                    'key' => $apiKey,
+                    'q' => $ville . ',France',
+                    'lang' => 'fr',
+                    'aqi' => 'no'
+                ],
+                'timeout' => 5
+            ]);
+            
+            if ($response->getStatusCode() === 200) {
+                $data = $response->toArray();
+                $current = $data['current'];
+                $location = $data['location'];
+                
+                return [
+                    'temperature' => round($current['temp_c']),
+                    'description' => ucfirst($current['condition']['text']),
+                    'icon' => str_replace('64x64', '128x128', $current['condition']['icon']), // Utiliser une icône plus grande
+                    'ville' => $location['name'],
+                    'humidite' => $current['humidity'],
+                    'vent' => round($current['wind_kph']) // Déjà en km/h
+                ];
+            }
+        } catch (\Exception $e) {
+            // En cas d'erreur, retourner null
+            return null;
+        }
+        
+        return null;
     }
 
     #[Route('/{id}', name: 'app_profil', methods: ['GET'])]
